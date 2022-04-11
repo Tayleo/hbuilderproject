@@ -1,0 +1,1 @@
+<view><view class="pic"><view style="margin-top:100rpx;"><u-button class="button-style" vue-id="90ced098-1" shape="circle" type="primary" text="点击开始匹配" bind:__l="__l"></u-button></view></view></view>

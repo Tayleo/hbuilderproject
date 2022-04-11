@@ -1,0 +1,53 @@
+{
+  "pages": [
+    "pages/mypages/users",
+    "pages/mainpage/manageinfo/updateinfo",
+    "pages/mainpage/manageinfo/lookinfo",
+    "pages/mainpage/manageinfo/releaseinfo",
+    "pages/mainpage/mainpage",
+    "pages/match/match",
+    "pages/info/info",
+    "pages/chat/chat",
+    "pages/testlogin/testlogin"
+  ],
+  "subPackages": [],
+  "window": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "uni-app",
+    "navigationBarBackgroundColor": "#F8F8F8",
+    "backgroundColor": "#F8F8F8"
+  },
+  "tabBar": {
+    "color": "#7A7E83",
+    "selectedColor": "#7A7E83",
+    "borderStyle": "black",
+    "backgroundColor": "#ffffff",
+    "list": [
+      {
+        "pagePath": "pages/mainpage/mainpage",
+        "iconPath": "static/icon/main.png",
+        "selectedIconPath": "static/icon/main_se.png",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/match/match",
+        "iconPath": "static/icon/match.png",
+        "selectedIconPath": "static/icon/match_se.png",
+        "text": "匹配"
+      },
+      {
+        "pagePath": "pages/chat/chat",
+        "iconPath": "static/icon/match.png",
+        "selectedIconPath": "static/icon/match_se.png",
+        "text": "信息"
+      },
+      {
+        "pagePath": "pages/mypages/users",
+        "iconPath": "static/icon/mine.png",
+        "selectedIconPath": "static/icon/mine_se.png",
+        "text": "我的"
+      }
+    ]
+  },
+  "usingComponents": {}
+}

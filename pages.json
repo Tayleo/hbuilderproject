@@ -1,8 +1,54 @@
 {
 	"easycom": {
-			"^u-(.*)": "uview-ui/components/u-$1/u-$1.vue"
+		// 下载安装方式
+		// 下载安装的方式需要前面的"@/"，npm安装的方式无需"@/"
+		// "^u-(.*)": "@/uview-ui/components/u-$1/u-$1.vue"
+		// //npm安装方式
+		// "^u-(.*)": "uview-ui/components/u-$1/u-$1.vue"	 
+	   // 下载安装的方式需要前面的"@/"，npm安装的方式无需"@/"
+	   // 下载安装方式
+	   "^u-(.*)": "@/uview-ui/components/u-$1/u-$1.vue"
+	   // npm安装方式
+		//"^u-(.*)":"uview-ui/components/u-$1/u-$1.vue"
+			  
 	},
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		{
+		    "path" : "pages/mypages/users",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "个人中心",
+		        "enablePullDownRefresh": false
+		    }
+		},
+		{
+		    "path" : "pages/mainpage/manageinfo/updateinfo",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "修改发布信息",
+		        "enablePullDownRefresh": false
+		    }
+		    
+		},
+		
+		{
+		    "path" : "pages/mainpage/manageinfo/lookinfo",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "查看发布信息",
+		        "enablePullDownRefresh": false
+		    }
+		    
+		},
+		{
+		    "path" : "pages/mainpage/manageinfo/releaseinfo",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "发布信息",
+		        "enablePullDownRefresh": false
+		    }
+		    
+		},
 		{
             "path" : "pages/mainpage/mainpage",
             "style" :                                                                                    
@@ -22,23 +68,33 @@
             
         }
         ,{
-            "path" : "pages/mypages/mypages",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "个人中心",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
             "path" : "pages/info/info",
             "style" :                                                                                    
             {
                 "navigationBarTitleText": "详细信息",
                 "enablePullDownRefresh": false
             }
+        }
+        ,{
+            "path" : "pages/chat/chat",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "信息",
+                "enablePullDownRefresh": false
+            }
             
         }
+        ,{
+            "path" : "pages/testlogin/testlogin",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+		
+        
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
@@ -61,12 +117,28 @@
 		"iconPath": "static/icon/match.png",
 		"selectedIconPath": "static/icon/match_se.png",
 		"text": "匹配"
+	},
+	{
+		"pagePath": "pages/chat/chat",
+		"iconPath": "static/icon/match.png",
+		"selectedIconPath": "static/icon/match_se.png",
+		"text": "信息"
 	},{
-		"pagePath": "pages/mypages/mypages",
+		"pagePath": "pages/mypages/users",
 		"iconPath": "static/icon/mine.png",
 		"selectedIconPath": "static/icon/mine_se.png",
 		"text": "我的"
 	}]
-}
+},
+	"condition" : { //模式配置，仅开发期间生效
+		"current": 0, //当前激活的模式(list 的索引项)
+		"list": [
+			{
+				"name": "", //模式名称
+				"path": "", //启动页面，必选
+				"query": "" //启动参数，在页面的onLoad函数里面得到
+			}
+		]
+	}
 	
 }

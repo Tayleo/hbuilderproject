@@ -8,18 +8,19 @@
 	
 		<view class="u-page">
 			<u-list @scrolltolower="scrolltolower" >
-				<uni-list-item  
+				<u-list-item  
 					v-for="(item, index) in indexList"
 					:key="index"  
-					@click="infopage()"link>
-						<u-cell :title="`姓名:  ${item.name}
-						出生日期：${item.birth_time}
-						家庭住址：${item.address}`">
+					>
+					<view @click="infopage()"link>
+						<u-cell :title="`姓名:{{item.real_name}} 出生日期：{{item.birthday}} 家庭住址：{{item.now_address}}`">
 						<u-avatar slot="icon" shape="square" size="65" :src="item.url"
 							customStyle="margin: -3px 5px -3px 0"></u-avatar>
 						</u-cell>
+					</view>
 						
-					</uni-list-item>
+						
+					</u-list-item>
 				</u-list>
 			</view>
 			
@@ -29,6 +30,7 @@
 </template>
 
 <script>
+	import {postallchildren,postallrelative} from '../../common/config/api.js'
 	export default {
 		data() {
 			return {
@@ -38,10 +40,8 @@
 					'https://cdn.uviewui.com/uview/swiper/swiper3.png'
 				],
 				sortlist:[
-					{name:'默认'},
-					{name:'销量'},
-					{name:'推荐'},
-					{name:'最新'}
+					{name:'查看走失人'},
+					{name:'查看寻亲人'}
 				],
 				currentsort:0,
 				indexList: [],
@@ -65,27 +65,48 @@
 		methods: {
 
 			changesort(index){
-				console.log(index);
-				this.currentsort=index;
+				console.log(index.index);
+				this.currentsort=index.index;
+				
+				postallrelative({custom:{auth:true}}).then(res=>{
+					this.indexList=res.data
+					console.log(this.indexList)
+				}).catch(()=>{
+					
+				})
+				
 			},
 			scrolltolower() {
 				this.loadmore()
 			},
 			loadmore() {
-				for (let i = 0; i < 30; i++) {
-					this.indexList.push({
-						url: this.urls[uni.$u.random(0, this.urls.length - 1)],
-						name: "刘桂芳",
-						birth_time : "2000-10",
-						address: "四川省"
-					})
-				}
+				//发送post请求，向后端请求数据
+				postallchildren({custom:{auth:true}}).then(res=>{
+					this.indexList=res.data
+					console.log(this.indexList)
+					
+				}).catch(()=>{
+					
+				})
+					
+				
+				// for (let i = 0; i < 20; i++) {
+				// 	this.indexList.push({
+				// 		url: this.urls[uni.$u.random(0, this.urls.length - 1)],
+				// 		name: "刘桂芳",
+				// 		birth_time : "2000-10",
+				// 		address: "四川省"
+				// 	})
+				// }
 			},
 			
 			infopage(){
-				console.log('test');
-				uni.navigateTo({
-					url:"../info/info"
+				//如果发帖人身份为走失者（将自己id传递给详细页面）下一个页面在children表中查找数据
+				uni.$u.route({
+					url: 'pages/info/info',
+					params: {
+						user_id:2
+					}
 				})
 				
 			}

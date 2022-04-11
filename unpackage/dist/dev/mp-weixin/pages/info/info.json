@@ -1,0 +1,11 @@
+{
+  "navigationBarTitleText": "详细信息",
+  "enablePullDownRefresh": false,
+  "usingComponents": {
+    "u-row": "/uview-ui/components/u-row/u-row",
+    "u-col": "/uview-ui/components/u-col/u-col",
+    "u--image": "/uview-ui/components/u--image/u--image",
+    "u-tabbar": "/uview-ui/components/u-tabbar/u-tabbar",
+    "u-tabbar-item": "/uview-ui/components/u-tabbar-item/u-tabbar-item"
+  }
+}
