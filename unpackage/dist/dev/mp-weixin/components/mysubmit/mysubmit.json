@@ -1,0 +1,6 @@
+{
+  "usingComponents": {
+    "u-textarea": "/uview-ui/components/u-textarea/u-textarea"
+  },
+  "component": true
+}

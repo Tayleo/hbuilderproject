@@ -1,8 +1,8 @@
 <template>
 	<view>
 		<u--form labelPosition="left" :model="model" :rules="rules" ref="form1">
-			<u-form-item v-if="vuex_status==2">个人基本信息</u-form-item>
-			<u-form-item v-if="vuex_status==3">走失人基本信息</u-form-item>
+			<u-form-item v-if="vuex_user.role_id==2">个人基本信息</u-form-item>
+			<u-form-item v-if="vuex_user.role_id==3">走失人基本信息</u-form-item>
 			<u-form-item label="姓名" prop="name" borderBottom ref="item1">
 				<u--input placeholder="请输入姓名" v-model="model.userInfo.name" ></u--input>
 			</u-form-item>
@@ -24,7 +24,7 @@
 			<u-form-item label="出生日期" prop="birthday">
 				<u--input v-model="model.userInfo.birthday" placeholder="日期格式为YYYY-MM-XX"></u--input>
 			</u-form-item>
-			<view v-if="vuex_status==2">
+			<view v-if="vuex_user.role_id==2">
 				<u-form-item  label="现居住地" prop="address">
 					<u--input v-model="model.userInfo.address" placeholder="请输入目前居住地"></u--input>
 				</u-form-item>
@@ -54,7 +54,7 @@
 				<u--input v-model="model.lost.details" placeholder="走失情况详细描述"></u--input>
 			</u-form-item>
 		
-			<view v-if="vuex_status==3">
+			<view v-if="vuex_user.role_id==3">
 				<u-form-item >亲属关系</u-form-item>
 				<u-form-item label="关系">
 					<u--input v-model="model.relation" placeholder="与走失者关系"></u--input>
@@ -149,7 +149,7 @@
 			},
 			getinfo(){
 				//如果用户的身份为走失者，那么就去children表中寻找数据
-				switch(this.vuex_status){
+				switch(this.vuex_user.role_id){
 					case 2:
 						postchildrenbyid({user_id:this.vuex_user.user_id}).then((res)=>{
 							this.releaseinfo=res.data;

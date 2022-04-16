@@ -117,22 +117,24 @@ export default {
 			uni.getUserProfile({
 				desc:"微信信息授权",
 				success: infoRes =>{
-					//将个人信息传递给后端并且存入数据库
-					uni.$u.vuex('vuex_user.user_nickname', infoRes.userInfo.nickName)
-					uni.$u.vuex('vuex_user.user_avator_url',infoRes.userInfo.avatarUrl)
+					
 					wx.login({
 						 success: res=> {
-							//登录成功，修改hasLogin标志为已登录,
-							uni.$u.vuex('vuex_hasLogin', true);
+							
 							//this.onShow();
 							//将获取到的信息传入后端，后端存入数据库以及解密openid
 							postlogin({code:res.code,userinfo:infoRes}).then((res)=>{
+								//登录成功，修改hasLogin标志为已登录,
+								uni.$u.vuex('vuex_hasLogin', true);
 								//可以拿回来session_key以及openid,将openid存入全局变量
 								console.log(res.data.open_id);
 								uni.$u.vuex('vuex_user.open_id',res.data.open_id)
 								//存用户角色信息(角色以及id)
 								uni.$u.vuex('vuex_user.role_id',res.data.role_id)
 								uni.$u.vuex('vuex_user.user_id',res.data.user_id)
+								//将个人信息传递给后端并且存入数据库
+								uni.$u.vuex('vuex_user.user_nickname', infoRes.userInfo.nickName)
+								uni.$u.vuex('vuex_user.user_avator_url',infoRes.userInfo.avatarUrl)
 								//uni.$u.vuex('vuex_token',res.token)
 							}).catch((err)=>{
 								console.log(err);
@@ -199,8 +201,9 @@ export default {
 						this.showrole=true;
 						break;
 					case 1:
+						//console.log(this.vuex_user.role_id)
 						if(this.vuex_user.role_id==2){
-							//如果用户以及发布信息，则跳转到查看发布信息页面
+							//如果用户已经发布信息，则跳转到查看发布信息页面
 							chasrelease({user_id:this.vuex_user.user_id}).then((res)=>{
 								if(res.data==null){
 									uni.$u.route('/pages/mainpage/manageinfo/releaseinfo');
@@ -234,8 +237,9 @@ export default {
 			// } = e	
 			if(this.vuex_user.role_id!=e.indexs[0]){
 				//如果用户改变身份
-				console.log(this.vuex_user.user_id)
-				changerole({user_id:this.vuex_user.user_id, role_id:this.vuex_user.role_id}).then(()=>{
+				//console.log(this.vuex_user.user_id)
+				changerole({user_id:this.vuex_user.user_id, role_id:e.indexs[0]}).then(()=>{
+					uni.$u.vuex('vuex_user.role_id',e.indexs[0]+2)
 					uni.showToast({
 						title: '修改身份成功',
 						duration: 2000,

@@ -7,11 +7,21 @@
 					<u-row customStyle="margin-bottom: 10px">
 						<u-col span="6.5">
 							<view class="demo-layout">
-								<view class=" text-style-bold" style="padding-top: 20rpx;">姓名：{{baseinfo.realName}}</view>
-								<view class=" text-style-bold">性别：{{baseinfo.gender}}</view>
-								<view class=" text-style-bold">年龄：{{baseinfo.age}}</view>
-								<view class=" text-style-bold">出生年月：{{baseinfo.birthday}}</view>
-								<view class=" text-style-bold">居住地：{{baseinfo.nowAddress}}</view>
+								<view v-if="type==0">
+									<view class=" text-style-bold" style="padding-top: 20rpx;">姓名：{{baseinfo.realName}}</view>
+									<view class=" text-style-bold">性别：{{baseinfo.gender}}</view>
+									<view class=" text-style-bold">年龄：{{baseinfo.age}}</view>
+									<view class=" text-style-bold">出生年月：{{baseinfo.birthday}}</view>
+									<view class=" text-style-bold">居住地：{{baseinfo.nowAddress}}</view>
+								</view>
+								<view v-else>
+									<view class=" text-style-bold" style="padding-top: 20rpx;">姓名：{{baseinfo.childrenName}}</view>
+									<view class=" text-style-bold">性别：{{baseinfo.childrenGender}}</view>
+									<view class=" text-style-bold">年龄：{{baseinfo.childrenAge}}</view>
+									<view class=" text-style-bold">出生年月：{{baseinfo.birthday}}</view>
+									<!-- <view class=" text-style-bold">居住地：{{baseinfo.nowAddress}}</view> -->
+								</view>
+								
 							</view>
 						</u-col>
 						<u-col span="5.5">
@@ -48,9 +58,11 @@
 			:placeholder="true"
 			:safeAreaInsetBottom="true"
 		>
-			<u-tabbar-item text="私聊" icon="chat" ></u-tabbar-item>
-			<u-tabbar-item text="收藏" icon="star" ></u-tabbar-item>
+			<u-tabbar-item text="私聊" icon="chat" @click="chat" ></u-tabbar-item>
+			<u-tabbar-item text="收藏" icon="star" @click="star" ></u-tabbar-item>
 		</u-tabbar>
+		
+		
 	</view>
 	
 	
@@ -59,11 +71,12 @@
 </template>
 
 <script>
-	import {postchildrenbyid} from '../../common/config/api.js'
+	import {postchildrenbyid,postRelativeById} from '../../common/config/api.js'
 	export default {
 		data() {
 			return {
-				user_id:0,
+				type:0,
+				user_id:1,
 				tabber_value:0,
 				
 				baseinfo:{},
@@ -88,32 +101,58 @@
 		onLoad: function (option) { //option为object类型，会序列化上个页面传递的参数
 			
 			this.user_id=parseInt(option.user_id);
-			this.landmore();
+			this.type=parseInt(option.type);
+			//this.landmore();
 		},
 			
 		methods: {
 			landmore(){
-				postchildrenbyid({id:this.user_id}).then((res)=>{
+				if(this.type==0){
+					//发送请求给children
+					postchildrenbyid({user_id:this.user_id}).then((res)=>{
+						this.baseinfo=res.data
+						this.lostinfoList[0].info=this.baseinfo.lostTime
+						this.lostinfoList[1].info=this.baseinfo.lostAddress
+						this.lostinfoList[2].info=this.baseinfo.lostCloth
+						this.lostinfoList[3].info=this.baseinfo.lostHeight
+						this.lostinfoList[4].info=this.baseinfo.details
+						this.lostinfoList[5].info=this.baseinfo.features
+						
+						this.moreinfoList[0].info=this.baseinfo.phone
+						this.moreinfoList[1].info=this.baseinfo.eMail
+						this.moreinfoList[2].info=this.baseinfo.phone
+						this.moreinfoList[3].info=this.baseinfo.phone
+						
+						// console.log(this.baseinfo)
+					}).catch(()=>{
+						 console.log('获取数据失败')
+					})
+				}else{
+					//发送请求给children
+					postRelativeById({user_id:this.user_id}).then((res)=>{
+						console.log(res)
+						this.baseinfo=res.data
+					})
+				}		
+			},
+			chat(){
+				//进行聊天
+				console.log(this.user_id)
+				// uni.$u.route('/pages/chat/message',{
+				// 	accept_id:this.user_id
+				// })
+				uni.$u.route({
+					url: '/pages/chat/message',
+					params: {
 					
-					this.baseinfo=res.data
-					
-					this.lostinfoList[0].info=this.baseinfo.lostTime
-					this.lostinfoList[1].info=this.baseinfo.lostAddress
-					this.lostinfoList[2].info=this.baseinfo.lostCloth
-					this.lostinfoList[3].info=this.baseinfo.lostHeight
-					this.lostinfoList[4].info=this.baseinfo.details
-					this.lostinfoList[5].info=this.baseinfo.features
-					
-					this.moreinfoList[0].info=this.baseinfo.phone
-					this.moreinfoList[1].info=this.baseinfo.eMail
-					this.moreinfoList[2].info=this.baseinfo.phone
-					this.moreinfoList[3].info=this.baseinfo.phone
-					
-					// console.log(this.baseinfo)
-				}).catch(()=>{
-					
+						accept_id:this.user_id
+					}
 				})
-					
+			},
+			star(){
+				//点击进行收藏，再次点击取消收藏
+				console.log("this is star")
+				
 			}
 		}
 		

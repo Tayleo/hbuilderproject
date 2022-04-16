@@ -14,6 +14,7 @@ export const postallchildren = (params,config={}) =>http.post('/ChildrenControll
 
 //通过用户Id查看走失者详细信息
 export const postchildrenbyid = (params,config={}) =>http.post('/ChildrenController/getChildrenbyId',params,config)
+export const postRelativeById = (params,config={}) =>http.post('/RelativeController/getRelativebyid',params,config)
 
 
 
@@ -40,3 +41,10 @@ export const cupdateform = (params={},config ={}) =>http.post('/ChildrenControll
 
 //用户修改角色
 export const changerole = (params,config ={}) =>http.post('/UsersController/changeRole',params,config)
+
+
+//消息相关
+//发送消息
+export const sendmessage = (params,config ={}) =>http.post('/MessageController/sendMessage',params,config)
+//获取消息（分页,一次查询30条记录）
+export const getmessages = (params,config ={}) =>http.post('/MessageController/getMessage',params,config)

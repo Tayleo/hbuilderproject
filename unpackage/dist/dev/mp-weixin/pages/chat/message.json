@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "test",
+  "enablePullDownRefresh": false,
+  "usingComponents": {
+    "mysubmit": "/components/mysubmit/mysubmit"
+  }
+}

@@ -14,6 +14,35 @@
 	},
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 		{
+		    "path" : "pages/chat/message",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "test",
+		        "enablePullDownRefresh": false
+		    }
+		    
+		},
+		{
+		    "path" : "pages/info/info",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "详细信息",
+		        "enablePullDownRefresh": false
+		    }
+		}
+		,
+		
+		{
+		    "path" : "pages/mainpage/mainpage",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "首页",
+		        "enablePullDownRefresh": false
+		    }
+		    
+		}
+		,
+		{
 		    "path" : "pages/mypages/users",
 		    "style" :                                                                                    
 		    {
@@ -50,15 +79,6 @@
 		    
 		},
 		{
-            "path" : "pages/mainpage/mainpage",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "首页",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
             "path" : "pages/match/match",
             "style" :                                                                                    
             {
@@ -66,14 +86,6 @@
                 "enablePullDownRefresh": false
             }
             
-        }
-        ,{
-            "path" : "pages/info/info",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "详细信息",
-                "enablePullDownRefresh": false
-            }
         }
         ,{
             "path" : "pages/chat/chat",
@@ -93,7 +105,6 @@
             }
             
         }
-		
         
     ],
 	"globalStyle": {

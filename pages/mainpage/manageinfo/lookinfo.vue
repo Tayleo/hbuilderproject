@@ -79,15 +79,18 @@
 				
 			}
 		},
-		
+		// onShow() {
+		// 	this.lookmyrelease();
+		// }
 		onLoad() {
 			this.lookmyrelease();
 		},
 		methods: {
 			lookmyrelease(){
 				//如果用户的身份为走失者，那么就去children表中寻找数据
-				switch(this.vuex_status){
+				switch(this.vuex_user.role_id){
 					case 2:
+						
 						postchildrenbyid({user_id:this.vuex_user.user_id}).then((res)=>{
 							this.releaseinfo=res.data;
 							console.log(this.releaseinfo)

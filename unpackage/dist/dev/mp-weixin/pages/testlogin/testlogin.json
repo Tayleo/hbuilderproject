@@ -1,8 +1,5 @@
 {
   "navigationBarTitleText": "",
   "enablePullDownRefresh": false,
-  "usingComponents": {
-    "u-button": "/uview-ui/components/u-button/u-button",
-    "u-popup": "/uview-ui/components/u-popup/u-popup"
-  }
+  "usingComponents": {}
 }
