@@ -1,6 +1,14 @@
 <template>
 	<view>
-		<u-swiper :list="imglist"></u-swiper>
+		<view style="margin-bottom: 10rpx;"></view>
+		<u-swiper 
+		previousMargin="35rpx"
+		nextMargin="35rpx"
+		radius="15"
+		:list="imglist">
+			
+		</u-swiper>
+		
 		<view class="u-m-t-100">
 			<u-tabs :list="sortlist" bar-width="200" :current="currentsort" @change="changesort" link></u-tabs>
 		</view>
@@ -12,17 +20,16 @@
 					v-for="(item, index) in indexList"
 					:key="index"  
 					>
-					<view v-if="currentsort==0" @click="infopage(item.userId)"link>
-						
-						<u-cell :title="`姓名:{{item.realName}} 性别：{{item.gender}} 出生日期：{{item.birthday}}`">
-						<u-avatar slot="icon" shape="square" size="65" :src="item.url"
+					<view v-if="currentsort==0" @click="infopage(item.userId)"link >
+						<u-cell  :title="`姓名:{{item.realName}} \\n 性别：{{item.gender}} \\n 出生日期：{{item.birthday}}`">
+						<u-avatar slot="icon" shape="square" size="65" :src="item.picUrl"
 							customStyle="margin: -3px 5px -3px 0"></u-avatar>
 						</u-cell>
 					</view>
 					<view v-else @click="infopage(item.userId)"link>
 						
-						<u-cell :title="`姓名:{{item.childrenName}} 性别：{{item.childrenGender}} 出生日期：{{item.birthday}}`">
-						<u-avatar slot="icon" shape="square" size="65" :src="item.url"
+						<u-cell :title="`姓名:{{item.childrenName}} \\n 性别：{{item.childrenGender}} \\n 出生日期：{{item.birthday}}`">
+						<u-avatar slot="icon" shape="square" size="65" :src="item.childrenUrl"
 							customStyle="margin: -3px 5px -3px 0"></u-avatar>
 						</u-cell>
 					</view>
@@ -43,10 +50,13 @@
 	export default {
 		data() {
 			return {
+				pagesize:10,
+				repagenum:1,
+				chpagenum:1,
 				imglist:[
-					'https://cdn.uviewui.com/uview/swiper/swiper1.png',
-					'https://cdn.uviewui.com/uview/swiper/swiper2.png',
-					'https://cdn.uviewui.com/uview/swiper/swiper3.png'
+					'http://rafrb6vhx.hn-bkt.clouddn.com/swiper.webp',
+					'http://rafrb6vhx.hn-bkt.clouddn.com/ban01.jpg',
+					'http://rafrb6vhx.hn-bkt.clouddn.com/swiper2.webp'
 				],
 				sortlist:[
 					{name:'走失人发布'},
@@ -74,17 +84,34 @@
 		methods: {
 
 			changesort(index){
-				
-				this.currentsort=index.index;
+				console.log(index)
+				this.currentsort=index.index
 				if(this.currentsort==0){
 					console.log(this.currentsort)
-					postallchildren({custom:{auth:true}}).then(res=>{
+					postallchildren({pagenum:this.chpagenum,pagesize:this.pagesize}).then(res=>{
+						console.log(res.data)
 						this.indexList=res.data
+						for (var i = 0; i < this.indexList.length; i++) {
+							if(this.indexList[i].gender==1){
+								this.indexList[i].gender='男'
+							}else{
+								this.indexList[i].gender='女'
+							}
+							
+						}
 					})
 				}else{
-					postallrelative({custom:{auth:true}}).then(res=>{
+					postallrelative({pagenum:this.chpagenum,pagesize:this.pagesize}).then(res=>{
 						this.indexList=res.data
 						console.log(this.indexList)
+						for (var j = 0; j < this.indexList.length; j++) {
+							if(this.indexList[j].childrenGender==1){
+								this.indexList[j].childrenGender='男'
+							}else{
+								this.indexList[j].childrenGender='女'
+							}
+							
+						}
 					})
 				}
 			},
@@ -95,25 +122,33 @@
 				//发送post请求，向后端请求数据
 				if(this.currentsort==0){
 					console.log(this.currentsort)
-					postallchildren({custom:{auth:true}}).then(res=>{
+					postallchildren({pagenum:this.chpagenum,pagesize:this.pagesize}).then(res=>{
+						console.log(res.data)
 						this.indexList=res.data
+						for (var i = 0; i < this.indexList.length; i++) {
+							if(this.indexList[i].gender==1){
+								this.indexList[i].gender='男'
+							}else{
+								this.indexList[i].gender='女'
+							}
+							
+						}
 					})
 				}else{
-					postallrelative({custom:{auth:true}}).then(res=>{
+					postallrelative({pagenum:this.chpagenum,pagesize:this.pagesize}).then(res=>{
 						this.indexList=res.data
 						console.log(this.indexList)
+						for (var j = 0; j < this.indexList.length; j++) {
+							if(this.indexList[j].childrenGender==1){
+								this.indexList[j].childrenGender='男'
+							}else{
+								this.indexList[j].childrenGender='女'
+							}
+							
+						}
 					})
 				}
 					
-				
-				// for (let i = 0; i < 20; i++) {
-				// 	this.indexList.push({
-				// 		url: this.urls[uni.$u.random(0, this.urls.length - 1)],
-				// 		name: "刘桂芳",
-				// 		birth_time : "2000-10",
-				// 		address: "四川省"
-				// 	})
-				// }
 			},
 			
 			infopage(userid){
@@ -132,6 +167,10 @@
 	}
 </script>
 
-<style>
-
+<style lang="scss">
+	
+.info{
+	box-shadow: 0 1px 1px rgba(152, 152, 152, 0.5);
+	
+}
 </style>

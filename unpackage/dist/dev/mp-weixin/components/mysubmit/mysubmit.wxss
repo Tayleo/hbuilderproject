@@ -63,4 +63,10 @@
   height: 91rpx;
   background-color: #FFFFFF;
 }
+.emoji {
+  width: 100%;
+  height: 380rpx;
+  background: #ecedee;
+  box-shadow: 0px -1px 0px 0px rgba(0, 0, 0, 0.1);
+}
 

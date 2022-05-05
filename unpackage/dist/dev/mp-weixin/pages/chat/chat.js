@@ -95,11 +95,8 @@ __webpack_require__.r(__webpack_exports__);
 var components
 try {
   components = {
-    uniSwipeAction: function() {
-      return __webpack_require__.e(/*! import() | components/uni-swipe-action/uni-swipe-action */ "components/uni-swipe-action/uni-swipe-action").then(__webpack_require__.bind(null, /*! @/components/uni-swipe-action/uni-swipe-action.vue */ 380))
-    },
-    uniSwipeActionItem: function() {
-      return Promise.all(/*! import() | components/uni-swipe-action-item/uni-swipe-action-item */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-swipe-action-item/uni-swipe-action-item")]).then(__webpack_require__.bind(null, /*! @/components/uni-swipe-action-item/uni-swipe-action-item.vue */ 385))
+    uSearch: function() {
+      return Promise.all(/*! import() | uview-ui/components/u-search/u-search */[__webpack_require__.e("common/vendor"), __webpack_require__.e("uview-ui/components/u-search/u-search")]).then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-search/u-search.vue */ 391))
     }
   }
 } catch (e) {
@@ -183,156 +180,71 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-var _api = __webpack_require__(/*! ../../common/config/api.js */ 147);var uniIcons = function uniIcons() {Promise.all(/*! require.ensure | components/uni-icons/uni-icons */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-icons/uni-icons")]).then((function () {return resolve(__webpack_require__(/*! @/components/uni-icons/uni-icons.vue */ 395));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var uniSwipeAction = function uniSwipeAction() {__webpack_require__.e(/*! require.ensure | components/uni-swipe-action/uni-swipe-action */ "components/uni-swipe-action/uni-swipe-action").then((function () {return resolve(__webpack_require__(/*! @/components/uni-swipe-action/uni-swipe-action.vue */ 380));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var uniSwipeActionItem = function uniSwipeActionItem() {Promise.all(/*! require.ensure | components/uni-swipe-action-item/uni-swipe-action-item */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-swipe-action-item/uni-swipe-action-item")]).then((function () {return resolve(__webpack_require__(/*! @/components/uni-swipe-action-item/uni-swipe-action-item.vue */ 385));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
-{
-  components: { uniIcons: uniIcons, uniSwipeAction: uniSwipeAction, uniSwipeActionItem: uniSwipeActionItem },
-  data: function data() {
-    return {
-      options: [
-      {
-        text: '删除',
-        style: {
-          backgroundColor: '#f9828a' } }],
-
-
-
-      posRight: '15px',
-      //userId: uni.getStorageSync('userId') || '',
-      list: [] };
-
-  },
-  onShow: function onShow() {
-    // 监听是否连接成功
-    // this.$xbcim.onsuccess(()=>{
-    // 	console.log('连接成功')
-    // })
-
-    // // 监听连接是否错误
-    // this.$xbcim.onerror((error)=>{
-    // 	console.log('error', error)
-    // })
-
-    // // 监听Sockect是否断开
-    // this.$xbcim.onclose(()=>{
-    // 	console.log('连接断开')
-    // })
-
-    // // 接收消息
-    // this.$xbcim.onmessage(data=>{
-    // 	this.list = this.list.map(item=>{
-    // 		switch(item.type){
-    // 			case 'group':	// 群消息
-    // 				if(data.type == 'group' && item.groupId == data.target){
-    // 					item.content = data.content
-    // 					item.date = '刚刚'
-    // 				}
-    // 				break
-    // 			case 'single':	// 单聊消息
-    // 				if(data.type == 'single' && (item.fromUserId == data.source || item.toUserId == data.source)){
-    // 					item.content = data.content
-    // 					item.date = '刚刚'
-    // 				}
-    // 				break
-    // 		}
-    // 		return item
-    // 	})
-    // })
-
-    this.getList();
-  },
-  onLoad: function onLoad() {
-
-    var menuButtonInfo = uni.getMenuButtonBoundingClientRect();
-    this.posRight = menuButtonInfo.width + 20 + 'px';
-
-
-  },
-  methods: {
-    // 关闭滑块
-    // closeSwipe(){
-    // 	this.$refs.swipe.closeOther()
-    // },
-    // // 详情
-    // toDetail(item){
-    // 	// 判断是群聊还是单聊
-    // 	if(item.type == 'group'){
-    // 		uni.setStorageSync('groupName', item.groupName || '群聊'+item.groupId)
-    // 		this.toPage('/pages/message/group/detail?groupId='+item.groupId)
-    // 	}else{
-    // 		let { fromUserId, toUserId, telephone } = item
-    // 		let userId = toUserId == this.userId ? fromUserId : toUserId
-    // 		this.toPage('/pages/message/chat/index?toUserId='+userId+'&toUserName='+telephone)
-    // 	}
-    // },
-    // // 切换
-    // swipeChange(){},
-    // 处理消息类型
-    dealMessage: function dealMessage() {var msg = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';var type = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'text';
-      var ret = msg;
-      switch (type) {
-        case 'voice':ret = '语音消息';break;
-        case 'image':ret = '图片';break;
-        case 'map':ret = '位置信息';break;
-        default:ret = msg;}
-
-      return ret;
+var _api = __webpack_require__(/*! ../../common/config/api.js */ 147);
+var _myfun = _interopRequireDefault(__webpack_require__(/*! ../../common/js/myfun.js */ 146));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };} //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+var _default = { data: function data() {return { search: '', chatlist: [// {info_id:'info_id',
+        // user_id:'user_id',
+        // user_nickname:'老陈菜',
+        // avatar_url:'../../static/pic/people1.webp',
+        // time:'2020-10-02',
+        // content:'你好，小陈菜',
+        // status:'0',
+        // msgtype:'0',
+        // },
+        // {info_id:'info_id',
+        // user_id:'user_id',
+        // user_nickname:'小陈菜',
+        // avatar_url:'../../static/pic/people2.webp',
+        // time:'2020-10-02',
+        // content:'你个傻逼玩意儿，老陈菜',
+        // status:'0',
+        // msgtype:'0',
+        // },
+      ] };}, onShow: function onShow() {// if(this.vuex_hasLogin){
+    // 	this.getlist()
+    // }else{
+    // 	uni.showToast({
+    // 		title: '请先登录',
+    // 		duration: 2000
+    // 	});
+    // }
+    this.getlist();}, onLoad: function onLoad(option) {}, methods: { getlist: function getlist() {var _this = this;(0, _api.getchatlist)({ user_id: 1 }).then(function (res) {console.log(res.data);_this.chatlist = res.data;for (var i = 0; i < _this.chatlist.length; i++) {_this.chatlist[i].time = _myfun.default.chatTime(_this.chatlist[i].time);}}).catch(function () {console.log("获取消息列表失败");});
     },
-    //获取用户消息
+    checkmessage: function checkmessage(e) {
 
-    getList: function getList() {var _this = this;
-      (0, _api.postInfos)({ custom: { auth: true } }).then(function (res) {
-        var data = res.data;
-        console.log(res);
-        if (data) {
-          _this.list = data.map(function (item) {
+      uni.$u.route({
+        url: 'pages/chat/message',
+        params: {
+          accept_id: e.user_id,
+          avatar_url: e.avatar_url } });
 
-            console.log("accept_id为" + item);
 
-            // item.content = this.dealMessage(item.content, item.msgType)
-            // item.groupFace = item.groupFace ? this.$api.staticPath + item.groupFace : ''
-            // item.userFace = item.face ? this.$api.staticPath + item.face : ''
-            //return item
-          });
-        }
-      }).catch(function (e) {
-        console.log(e);
-      });
 
-      // uni.request({
-      // 	url: this.$api.getMsgRecord,
-      // 	data: {
-      // 		userId: this.userId
-      // 	},
-      // 	header: this.$util.getHeader(),
-      // 	success: res=>{
-      // 		let data = res.data.data
-      // 		if(data){
-      // 			this.list = data.map(item=>{
-      // 				item.content = this.dealMessage(item.content, item.msgType)
-      // 				item.groupFace = item.groupFace ? this.$api.staticPath + item.groupFace : ''
-      // 				item.userFace = item.face ? this.$api.staticPath + item.face : ''
-      // 				return item
-      // 			})
-      // 		}else{
-      // 			this.list = []
-      // 		}
-      // 	}
-      // })
     } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 

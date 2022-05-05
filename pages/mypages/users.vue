@@ -5,6 +5,10 @@
 				<view class="face"><image :src="vuex_user.user_avator_url ||'/static/img/head.png'"></image></view>
 				<view class="info" v-if="vuex_hasLogin">
 					<view class="username">{{vuex_user.user_nickname}}</view>
+					<view class="integral" v-if="vuex_user.role_id==2">身份  :  走失者</view>
+					<view class="integral" v-else-if="vuex_user.role_id==3">身份  :  寻亲者</view>
+					<view class="integral" v-else-if="vuex_user.role_id==4">身份  :  游客</view>
+					
 					<!-- <view v-if="userInfo.memberRole==0" class="integral">{{ userInfo.phone }}</view>
 					<view v-else class="integral">{{userInfo.company}} . {{userInfo.postName}}</view> -->
 				</view>
@@ -13,9 +17,8 @@
 					<view class="integral">点击进行登陆</view>
 				</view>
 			</view>
-			<view class="setting"><image src="../../static/HM-PersonalCenter/setting.png"></image></view>
-		</view>
-		<view class="orders">
+			</view>
+		<!-- <view class="orders">
 			
 			<view class="box" >
 				<view class="label" v-for="(row, index) in orderTypeLise2" :key="row.name" hover-class="hover" @tap="toOrderType2(index)">
@@ -27,7 +30,7 @@
 				</view>
 			</view>
 			
-		</view>
+		</view> -->
 		<view class="list" v-for="(list, list_i) in severList" :key="list_i">
 			<view class="li" v-for="(li, li_i) in list" @tap="toPage(list_i, li_i)" v-bind:class="{ noborder: li_i == list.length - 1 }" hover-class="hover" :key="li.name">
 				<view class="icon"><image :src="'../../static/HM-PersonalCenter/sever/' + li.icon"></image></view>
@@ -37,67 +40,42 @@
 		</view>
 		
 		<view>
-			<u-picker :show="showrole" ref="uPicker" :columns="columnroles" @confirm="roleconfirm">
-				
+			<u-picker :show="showrole" ref="uPicker" 
+			:defaultIndex='defaultIndex'
+			:columns="columnroles" @confirm="roleconfirm" @cancel="cancel">
 			</u-picker>
-			
 		</view>
-		<!-- <u-popup show="applywx" mode="bottom">
-			<view>
-				<view style="margin: 50rpx;">儿童救助系统申请</view>
-				<view style="margin: 50rpx;">获取你的昵称，头像，地区及性别</view>
-				<view>
-					<u-row>
-						<u-col span="2" style="margin: 50rpx;">
-							<u-avatar></u-avatar>
-						</u-col>
-						<u-col span="10">
-							<view>微信个人信息</view>
-							<view>老陈才</view>
-						</u-col>
-					</u-row>
-				</view>
-				<u-row>
-					<u-col span="6">
-						<u-button @click="wxrefuse">拒绝</u-button>
-					</u-col>
-					<u-col span="6">
-						<u-button @click="wxlogin">允许</u-button>
-					</u-col>
-				</u-row>
-				
-				
-			</view>
-		</u-popup> -->
 	</view>
 </template>
 <script>
-import {postlogin,CancelBindWechat,chasrelease,changerole} from '../../common/config/api.js';
+import {postlogin,CancelBindWechat,chasrelease,changerole,rhasrelease} from '../../common/config/api.js';
 export default {
 	data() {
 		return {
+			defaultIndex:[2],
 			showrole:false,
 			applywx:false,
-			orderTypeLise2: [
-				//name-标题 icon-图标 badge-角标
-				{ name: '我的身份', show:true,icon: 'yzb-liulanjilu', badge: 0, url: null},
-				{ name: '我的发布', show:true, icon: 'yzb-jianli', badge: 1, url: null },
-				{ name: '我的匹配', show:true,icon: 'yzb-mianshiyaoqing', badge: 0, url:null},
-				{ name: '我的收藏', show:true,icon: 'yzb-ziyuan141', badge: 2, url: null },
-			],
+			// orderTypeLise2: [
+			// 	//name-标题 icon-图标 badge-角标
+			// 	{ name: '我的身份', show:true,icon: 'mystatus', badge: 0, url: null},
+			// 	{ name: '我的发布', show:true, icon: 'myrelease', badge: 0, url: null },
+			// 	{ name: '我的匹配', show:true,icon: 'mymatch', badge: 0, url:null},
+			// 	{ name: '我的收藏', show:true,icon: 'mystar', badge: 0, url: null },
+			// ],
 			severList: [
 				[
-					{ name: '修改信息', show:true,icon: 'momey.png', url: null}, 
-					// { name: '求职意向', icon: 'point.png', url: this.$mRoutesConfig.editExpect}, 
-					{ name: '隐私设置', show:true,icon: 'quan.png', url:null}, 
-					{ name: '退出登录', show:true,icon: 'renw.png', url:"zhaopin" }],
+					{ name: '我的身份', show:true,icon: 'status.png', badge: 0, url: null},
+					{ name: '我的发布', show:true, icon: 'release.png', badge: 0, url: null },
+					{ name: '我的匹配', show:true,icon: 'mymatch.png', badge: 0, url:null},
+					{ name: '我的收藏', show:true,icon: 'star.png', badge: 0, url: null },
+				
+				],
 				[
-					{ name: '帮助中心', show:true,icon: 'mingxi.png', url: null},
-					{ name: '意见反馈', show:true,icon: 'choujiang.png', url: null},
-					{ name: '关于我们', show:true,icon: 'addr.png', url: null},
-					{ name: '在线客服', show:true,icon: 'kefu.png', url: null},
-					{ name: '系统设置', show:true,icon: 'bank.png', url: null},
-				]
+					// { name: '求职意向', icon: 'point.png', url: this.$mRoutesConfig.editExpect}, 
+					{ name: '意见反馈', show:true,icon: 'opinion.png', url:null}, 
+					{ name: '关于我们', show:true,icon: 'about.png', url:"zhaopin" },
+					{ name: '退出登录', show:true,icon: 'momey.png', url: null},],
+					
 			],
 			columnroles:[
 				['走失者','寻亲者','游客']
@@ -160,73 +138,95 @@ export default {
 
 		//用户点击列表项
 		toPage(list_i, li_i) {
-			
-			if(list_i==0&&li_i==2){
-				if(this.vuex_hasLogin){
-					//uni.$u.vuex('vuex_user',null)
-					//uni.$u.vuex('vuex_hasLogin',false)
-					//console.log(this.vuex_user)
-					//即点击退出登录功能，取消微信绑定
-					//而取消用户绑定，只需要置空服务器端用户表对应记录的openId，并置空本地用户的openid信息即可
-					CancelBindWechat({user_id:this.vuex_user.user_id}).then((res)=>{
-						uni.$u.vuex('vuex_hasLogin',false)
-						uni.$u.vuex('vuex_user.open_id',null)
-						uni.$u.vuex('vuex_user.user_nickname', null)
-						uni.$u.vuex('vuex_user.user_avator_url',null)
-						uni.$u.vuex('vuex_user.role_id',null)
-						uni.$u.vuex('vuex_user.user_id',null)
-						//this.onShow();
-					}).catch((err)=>{
-						console.log(err)
-					})
-				}else{
-					
+			if(list_i==0){
+				if(this.vuex_hasLogin==false){
+					uni.showToast({
+						icon:'error',
+						title: '请先登录',
+						duration: 2000
+					});
 				}
-				
+				if(li_i==0){
+					this.showrole=true;
+					console.log(li_i)
+				}else if(li_i==1){
+					
+					//点击我的发布
+					if(this.vuex_user.role_id==2){
+						//如果用户已经发布信息，则跳转到查看发布信息页面
+						chasrelease({user_id:this.vuex_user.user_id}).then((res)=>{
+							if(res.data==null){
+								//如果用户没有发布信息，则跳转到发布信息页面
+								uni.$u.route('/pages/mainpage/manageinfo/releaseinfo');
+							}else{
+								uni.$u.route('/pages/mainpage/manageinfo/lookinfo');
+							}
+						})
+					}else if(this.vuex_user.role_id==3){
+						//如果用户已经发布信息，则跳转到查看发布信息页面
+						rhasrelease({user_id:this.vuex_user.user_id}).then((res)=>{
+							if(res.data==null){
+								//如果用户没有发布信息，则跳转到发布信息页面
+								uni.$u.route('/pages/mainpage/manageinfo/releaseinfo');
+							}else{
+								uni.$u.route('/pages/mainpage/manageinfo/lookinfo');
+							}
+						})
+					}else{
+						uni.showToast({
+							icon:'error',
+							title: '游客不能发布信息',
+							duration: 2000
+						});
+					}
+
+					console.log(li_i)
+				}else if(li_i==2){
+					
+					uni.$u.route('/pages/match/mymatch');
+					console.log(li_i)
+				}else{
+					uni.$u.route('/pages/mypages/mystar');
+					console.log(li_i)
+				}
+			}else{
+				if(li_i==0){
+					console.log(li_i)
+				}else if(li_i==1){
+					
+					
+					console.log(li_i)
+				}else{
+					console.log(li_i)
+					if(this.vuex_hasLogin){
+						//uni.$u.vuex('vuex_user',null)
+						//uni.$u.vuex('vuex_hasLogin',false)
+						//console.log(this.vuex_user)
+						//即点击退出登录功能，取消微信绑定
+						//而取消用户绑定，只需要置空服务器端用户表对应记录的openId，并置空本地用户的openid信息即可
+						CancelBindWechat({user_id:this.vuex_user.user_id}).then((res)=>{
+							uni.$u.vuex('vuex_hasLogin',false)
+							uni.$u.vuex('vuex_user.open_id',null)
+							uni.$u.vuex('vuex_user.user_nickname', null)
+							uni.$u.vuex('vuex_user.user_avator_url',null)
+							uni.$u.vuex('vuex_user.role_id',null)
+							uni.$u.vuex('vuex_user.user_id',null)
+							//this.onShow();
+						}).catch((err)=>{
+							console.log(err)
+						})
+					}
+				}
 			}
+			
 		},
 		
 	
-		toOrderType2(index){
-			if(this.vuex_hasLogin==false){
-				uni.showToast({
-					icon:'error',
-					title: '请先登录',
-					duration: 2000
-				});
-			}else{
-				switch(index){
-					
-					case 0:
-						this.showrole=true;
-						break;
-					case 1:
-						//console.log(this.vuex_user.role_id)
-						if(this.vuex_user.role_id==2){
-							//如果用户已经发布信息，则跳转到查看发布信息页面
-							chasrelease({user_id:this.vuex_user.user_id}).then((res)=>{
-								if(res.data==null){
-									uni.$u.route('/pages/mainpage/manageinfo/releaseinfo');
-								}else{
-									uni.$u.route('/pages/mainpage/manageinfo/lookinfo');
-								}
-							})
-							//如果用户没有发布信息，则跳转到发布信息页面
-							
-						}else if(this.vuex_user.role_id==3){
-							
-						}else{
-							
-						}
-						
-						break;
-					case 2 :
-						break;
-					case 3:
-						break;
-					default: ;
-				}
-			}
+		
+		
+		cancel(){
+			console.log("quxiao")
+			this.showrole=false
 		},
 		
 		roleconfirm(e){
@@ -259,6 +259,28 @@ export default {
 </script>
 
 <style lang="scss">
+	
+.mystatus{
+	content: url('../../static/icon/status.png');
+	width: 75rpx;
+	height: 75rpx;
+	
+}
+.myrelease{
+	content: url('../../static/icon/release.png');
+	width: 80rpx;
+	height: 80rpx;
+}
+.mymatch{
+	content: url('../../static/icon/mymatch.png');
+	width: 80rpx;
+	height: 80rpx;
+}
+.mystar{
+	content: url('../../static/icon/star.png');
+	width: 80rpx;
+	height: 80rpx;
+}
 page {
 	background-color: #fff;
 }
@@ -352,8 +374,8 @@ page {
 			font-size: 26upx;
 			.icon {
 				position: relative;
-				width: 7vw;
-				height: 7vw;
+				width: 10vw;
+				height: 10vw;
 				margin: 0 1vw;
 				.badge {
 					position: absolute;
@@ -380,6 +402,7 @@ page {
 			.label-icon {
 				font-size: 48upx;
 				color: $main-color;
+				
 			}
 		}
 	}
@@ -399,8 +422,8 @@ page {
 		}
 		.icon {
 			flex-shrink: 0;
-			width: 50upx;
-			height: 50upx;
+			width: 50rpx;
+			height: 50rpx;
 			image {
 				width: 50upx;
 				height: 50upx;
@@ -409,7 +432,8 @@ page {
 		.text {
 			padding-left: 30upx;
 			width: 100%;
-			color: #666;
+			font-size: 28rpx;
+			color: #000000;
 		}
 		.to {
 			flex-shrink: 0;

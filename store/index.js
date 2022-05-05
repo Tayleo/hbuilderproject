@@ -1,20 +1,3 @@
-// const store = new Vuex.Store({
-// 	state: {
-// 		vuex_token: '123654789',
-// 		userInfo:{
-// 			token:'132',
-// 		}
-// 	},
-// 	mutations: {
-// 		// payload为用户传递的值，可以是单一值或者对象
-// 		modifyToken(state, payload) {
-// 			state.vuex_token = payload.token;
-// 		}
-// 	}
-// })
-
-// export default store
-
 import Vue from 'vue'
 import Vuex from 'vuex'
 Vue.use(Vuex)
@@ -49,7 +32,7 @@ const store = new Vuex.Store({
 	state: {
 		// 如果上面从本地获取的lifeData对象下有对应的属性，就赋值给state中对应的变量
 		// 加上vuex_前缀，是防止变量名冲突，也让人一目了然
-		vuex_user: lifeData.vuex_user ? lifeData.vuex_user : {user_id:3, role_id:4, user_nickname:'hahah', user_avator_url:'',open_id:''},
+		vuex_user: lifeData.vuex_user ? lifeData.vuex_user : {user_id:1, role_id:2, user_nickname:'hahah', user_avator_url:'',open_id:''},
 		vuex_token: lifeData.vuex_token ? lifeData.vuex_token : '',
 		//vuex_status: lifeData.vuex_status ? lifeData.vuex_status :2,
 		//vuex_name: lifeData.vuex_name ? lifeData.vuex_name : '',

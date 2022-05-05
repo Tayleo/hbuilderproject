@@ -3,17 +3,21 @@
 		<view class="submit">
 			<view class="submit-chat">
 				<view class="bt-img" @click="records">
-					<image src="../../static/pic/chat/sound.png"></image>
+					<image :src="toc"></image>
 				</view>
 				<!-- <textarea auto-height="true" class="chat-send btn"></textarea> -->
-				<u-textarea autoHeight="true" class="btn" v-if="isrecord==true" ></u-textarea>
+				<u-textarea autoHeight="true" class="btn" v-if="isrecord==true" v-model="msgvalue"></u-textarea>
 				<view class="record btn" v-else>按住说话</view>
-				<view class="bt-img">
+				<view class="bt-img" @click="emoji">
 					<image src="../../static/pic/chat/emoji.png"></image>
 				</view>
 				<view class="bt-img">
-					<image src="../../static/pic/chat/add.png"></image>
+					<!-- <image src="../../static/pic/chat/add.png"></image> -->
+					<u-button @click="inputs">发送</u-button>
 				</view>
+			</view>
+			<view class="emoji" v-if="isemoji==true">
+				表情
 			</view>
 		</view>
 	</view>
@@ -23,14 +27,59 @@
 	export default {
 		data() {
 			return {
-				isrecord:true
+				isrecord:true,
+				isemoji:false,
+				toc:'../../static/pic/chat/sound.png',
+				msgvalue:'',
 			}
 		},
 		methods: {
+			//获取模块高度
+			getElementHeight(){
+				const query=uni.createSelectorQuery().in(this)
+				
+				query.select('.submit').boundingClientRect(data=>{
+					this.$emit("heights",data.height)
+				}).exec(function(){
+					
+				})
+			},
+			
+			//点击切换音频
 			records(){
-				//点击切换音频
-				this.isrecord=!this.isrecord;
+				if(this.isrecord==true){
+					this.isrecord=false
+					this.toc='../../static/pic/chat/keypress.png'
+				}else{
+					this.isrecord=true
+					this.toc='../../static/pic/chat/sound.png'
+				}
+			},
+			//表情
+			emoji(){
+				this.isemoji=!this.isemoji
+				if(this.isemoji){
+					setTimeout(()=>{
+						this.getElementHeight()
+					},0)
+				}else{
+					this.$emit("heights",0)
+				}
+				
+				
+			},
+			sendmsg(){
+				console.log(this.msgvalue)
+			},
+			//文字发送
+			inputs(){
+				if(this.msgvalue.length>0){
+					//有内容时
+					this.$emit('inputs',this.msgvalue)
+					this.msgvalue=''
+				}
 			}
+			
 		}
 	}
 </script>
@@ -75,5 +124,11 @@
 			height: 91rpx;
 			background-color: #FFFFFF;
 		}
+	}
+	.emoji{
+		width: 100%;
+		height: 380rpx;
+		background: rgba(236,237,238,1);
+		box-shadow: 0px -1px 0px 0px rgba(0,0,0,0.1);
 	}
 </style>

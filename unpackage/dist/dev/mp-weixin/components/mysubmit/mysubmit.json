@@ -1,6 +1,7 @@
 {
   "usingComponents": {
-    "u-textarea": "/uview-ui/components/u-textarea/u-textarea"
+    "u-textarea": "/uview-ui/components/u-textarea/u-textarea",
+    "u-button": "/uview-ui/components/u-button/u-button"
   },
   "component": true
 }

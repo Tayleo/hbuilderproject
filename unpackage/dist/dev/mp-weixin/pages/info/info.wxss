@@ -25,14 +25,30 @@
 /* 垂直间距 */
 /* 透明度 */
 /* 文章场景相关 */
-.demo-layout {
-  height: 180px;
-  border-radius: 4px;
+.titletext {
+  font-size: 28rpx;
+  background-color: #f1f1f1;
+  height: 60rpx;
+}
+.top {
+  height: 350rpx;
+}
+.demo-layout-left {
+  height: 160px;
   padding: 10rpx;
+  margin-left: 20rpx;
+  margin-top: 40rpx;
+}
+.demo-layout-right {
+  height: 160px;
+  padding: 10rpx;
+  margin-top: 10rpx;
+  margin-bottom: 25rpx;
 }
 .text-style-bold {
   font-weight: bold;
   padding: 5rpx;
+  margin: 10rpx;
 }
 .bg-purple-dark {
   background: #99a9bf;
@@ -160,12 +176,11 @@
 }
 .list {
   width: 100%;
-  border-bottom: solid 26rpx #f1f1f1;
+  /* border-bottom: solid 26upx #f1f1f1; */
 }
 .list .li {
   width: 92%;
-  height: 100rpx;
-  padding: 0 4%;
+  padding: 4% 3%;
   border-bottom: solid 1rpx #e7e7e7;
   display: flex;
   align-items: center;
@@ -183,9 +198,10 @@
   height: 50rpx;
 }
 .list .li .text {
-  padding-left: 30rpx;
+  padding-left: 10rpx;
   width: 100%;
-  color: #666;
+  color: #000000;
+  font-size: 35rpx;
 }
 .list .li .to {
   flex-shrink: 0;

@@ -95,8 +95,8 @@ __webpack_require__.r(__webpack_exports__);
 var components
 try {
   components = {
-    uButton: function() {
-      return Promise.all(/*! import() | uview-ui/components/u-button/u-button */[__webpack_require__.e("common/vendor"), __webpack_require__.e("uview-ui/components/u-button/u-button")]).then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-button/u-button.vue */ 363))
+    uPopup: function() {
+      return Promise.all(/*! import() | uview-ui/components/u-popup/u-popup */[__webpack_require__.e("common/vendor"), __webpack_require__.e("uview-ui/components/u-popup/u-popup")]).then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-popup/u-popup.vue */ 383))
     }
   }
 } catch (e) {
@@ -153,7 +153,20 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -176,12 +189,24 @@ var _api = __webpack_require__(/*! ../../common/config/api.js */ 147); //
 //
 //
 //
-var _default = { data: function data() {return { matchsrc: '../../static/pic/match.webp' };}, onLoad: function onLoad() {// postInfos({ custom: { auth: true }}).then((res) => {
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+var _default = { data: function data() {return { showresult: false, matchsrc: '../../static/pic/match.webp' };}, onLoad: function onLoad() {// postInfos({ custom: { auth: true }}).then((res) => {
     // 				console.log(res)
     // 			}).catch((e) =>{
     // 				console.log(e)
     // 			})
-
     // getMenu({ custom: { auth: true }}).then((res) => {
     // 	//如果发生异常那么就不会执行里面的语句
     // 	console.log(res)
@@ -191,12 +216,10 @@ var _default = { data: function data() {return { matchsrc: '../../static/pic/mat
     //console.log(this.vuex_version)
     //新增vuex变量
     //this.$u.vuex('vuex_name','Tom')
-
     //console.log(this.vuex_name)
-
-  },
-
-  methods: {} };exports.default = _default;
+  }, methods: { startmatch: function startmatch() {//this.showresult=true
+      console.log("hahhaha");}, tomymatch: function tomymatch() {uni.$u.route('/pages/match/mymatch');} } };exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
 

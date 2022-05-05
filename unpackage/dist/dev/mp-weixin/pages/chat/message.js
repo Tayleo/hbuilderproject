@@ -96,7 +96,7 @@ var components
 try {
   components = {
     mysubmit: function() {
-      return __webpack_require__.e(/*! import() | components/mysubmit/mysubmit */ "components/mysubmit/mysubmit").then(__webpack_require__.bind(null, /*! @/components/mysubmit/mysubmit.vue */ 215))
+      return __webpack_require__.e(/*! import() | components/mysubmit/mysubmit */ "components/mysubmit/mysubmit").then(__webpack_require__.bind(null, /*! @/components/mysubmit/mysubmit.vue */ 239))
     }
   }
 } catch (e) {
@@ -188,32 +188,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 var _myfun = _interopRequireDefault(__webpack_require__(/*! ../../common/js/myfun.js */ 146));
 var _api = __webpack_require__(/*! ../../common/config/api.js */ 147);
 var _websocket = _interopRequireDefault(__webpack_require__(/*! ../../common/js/websocket.js */ 148));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };} //
@@ -250,63 +224,130 @@ var _websocket = _interopRequireDefault(__webpack_require__(/*! ../../common/js/
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-var mysubmit = function mysubmit() {__webpack_require__.e(/*! require.ensure | components/mysubmit/mysubmit */ "components/mysubmit/mysubmit").then((function () {return resolve(__webpack_require__(/*! ../../components/mysubmit/mysubmit.vue */ 215));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default = { data: function data() {return { page: 0, pagesize: 30, accept_id: 3, send_id: 15, isWxapp: false, navBarTitle: 'test', scrollToView: '', imgList: ['https://cdn.uviewui.com/uview/swiper/swiper1.png', 'https://cdn.uviewui.com/uview/swiper/swiper1.png', '../../static/pic/people.jpg'], msgList: [{ id: '3', //用户id
-        imagurl: '', //
-        message: '你好呀，谭晓松', type: '0', //内容类型：（0文字 1图片 2音频 ）
-        time: '2000-10-2', tip: 0 }, { id: '6', //用户id
-        imagurl: '', //
-        message: '../../static/pic/people.jpg', type: '1', //内容类型：（0文字 1图片 2音频 ）
-        time: '2000-10-2', tip: 0 }, { id: '6', //用户id
-        imagurl: '', //
-        message: '这张照片怎么样', type: '0', //内容类型：（0文字 1图片 2音频 ）
-        time: '2000-10-2', tip: 0 }] };}, onLoad: function onLoad(option) {//this.send_id=this.vuex_user.user_id;
-    //this.accept_id=parseInt(option.accept_id) 
-    // this.send_id=15
-    // this.accept_id=2 
-    // console.log(option.accept_id)
-    // console.log(this.accept_id)
-  }, components: { mysubmit: mysubmit }, onShow: function onShow() {//new wsRequest("ws://localhost:8081/webSocket",5000)
+var mysubmit = function mysubmit() {__webpack_require__.e(/*! require.ensure | components/mysubmit/mysubmit */ "components/mysubmit/mysubmit").then((function () {return resolve(__webpack_require__(/*! ../../components/mysubmit/mysubmit.vue */ 239));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default = { data: function data() {return { oldtime: new Date(), websocket: null, page: 1, pagesize: 30, accept_id: 3, accept_avatar: '', send_id: 15, inputh: 5, isWxapp: false, navBarTitle: 'passerby', scrollToView: '', imgList: ['https://cdn.uviewui.com/uview/swiper/swiper1.png', 'https://cdn.uviewui.com/uview/swiper/swiper1.png', '../../static/pic/people.jpg'], msgList: [// {
+        // 	id:'1'  ,//用户id
+        // 	imagurl:'',//
+        // 	message:'你好呀，谭晓松',
+        // 	type:'0',   //内容类型：（0文字 1图片 2音频 ）
+        // 	time:'2000-10-2',
+        // 	tip:0
+        // },
+        // {
+        // 	id:'6'  ,//用户id
+        // 	imagurl:'',//
+        // 	message:'../../static/pic/people.jpg',
+        // 	type:'1',   //内容类型：（0文字 1图片 2音频 ）
+        // 	time:'2000-10-2',
+        // 	tip:1
+        // },
+        // {
+        // 	id:'6'  ,//用户id
+        // 	imagurl:'',//
+        // 	message:'这张照片怎么样',
+        // 	type:'0',   //内容类型：（0文字 1图片 2音频 ）
+        // 	time:'2000-10-2',
+        // 	tip:2
+        // },
+        // {
+        // 	id:'3'  ,//用户id
+        // 	imagurl:'',//
+        // 	message:'../../static/pic/people.jpg',
+        // 	type:'1',   //内容类型：（0文字 1图片 2音频 ）
+        // 	time:'2000-10-2',
+        // 	tip:3
+        // },
+        // {
+        // 	id:'3'  ,//用户id
+        // 	imagurl:'',//
+        // 	message:'../../static/pic/people.jpg',
+        // 	type:'1',   //内容类型：（0文字 1图片 2音频 ）
+        // 	time:'2000-10-2',
+        // 	tip:4
+        // },
+      ] };}, // onLoad:function(option){
+  // 	//this.send_id=this.vuex_user.user_id;
+  // 	this.accept_id=option.accept_id
+  // 	console.log("this is"+option)
+  // 	// this.send_id=15
+  // 	// this.accept_id=2 
+  // 	// console.log(option.accept_id)
+  // 	// console.log(this.accept_id)
+  // },
+  components: { mysubmit: mysubmit },
+  onLoad: function onLoad(option) {
+    this.websocket = new _websocket.default("ws://localhost:8081/webSocket", 5000, this.vuex_user.user_id);
+    this.getnewmessage();
+    // this.accept_id=parseInt(option.accept_id)
+    this.accept_avatar = option.avatar_url;
+    // this.navBarTitle=option.name
+    console.log("this is" + this.accept_id);
     //this.getmoremessage()
-  }, methods: { getmoremessage: function getmoremessage() {//查看聊天记录(分页操作)
-      (0, _api.getmessages)({ page: this.page, pagesize: this.pagesize }).then(function (res) {console.log(res);}).catch(function (err) {console.log(err);});this.$nextTick(function () {//为了让发送消息之后回到底部
-        this.scrollToView = 'msg' + this.msgList[i].tip;});
+    uni.setNavigationBarTitle({
+      title: this.navBarTitle });
+
+
+  },
+  methods: {
+    getmoremessage: function getmoremessage() {var _this = this;
+      //查看聊天记录(分页操作)
+      (0, _api.getMessageBefore)({ page: this.page, pagesize: this.pagesize, accept_id: this.accept_id }).then(function (res) {
+        console.log(res);
+        _this.msgList = res.data;
+        var i = 0;
+        for (i = 0; i < _this.msgList.length; i++) {
+          _this.msgList[i].info_time = _myfun.default.dateTime(_this.msgList[i].info_time);
+        }
+
+        if (_this.msgList.length > 0) {
+          _this.$nextTick(function () {//回到底部
+            this.scrollToView = 'msg' + this.msgList[i - 1].info_id;
+          });
+        }
+
+      }).catch(function (err) {
+        console.log(err);
+      });
     },
-    sendmessage: function sendmessage() {
-      //发送消息
+
+    //接收输入内容并通过websocket发送给服务器
+    inputs: function inputs(e) {
+      this.websocket.send(e, this.accept_id, 0);
+
+    },
+
+    // sendmessage(e){
+    // 	//发送消息
+    // 	this.websocket.send(e)
+    // },
+
+    //关闭websocket连接
+    closesocket: function closesocket() {
+      this.websocket.close();
+    },
+
+    //接收消息
+    getnewmessage: function getnewmessage() {var _this2 = this;
+      //onMessage这个监听在封装的js中赋值给了socketTask对象
+      this.websocket.socketTask.onMessage(function (res) {
+        //console.log(res.data);
+        var a = JSON.parse(res.data);
+
+        _this2.msgList.push(a);
+        console.log(_this2.msgList);
+        // if(res.data == id){
+        // 	this.$success("价格核算完毕！")
+        // 	this.getOrderInfo(id)//重新调用这个订单详情
+        // 	this.websocket.close();//手动关闭websocket
+        // }
+      });
     },
 
     //预览图片
     previewImg: function previewImg(e) {
       var index = 0;
-      for (var _i = 0; _i < this.imgList.length; _i++) {
-        if (this.imgList[_i] == e) {
-          index = _i;
+      for (var i = 0; i < this.imgList.length; i++) {
+        if (this.imgList[i] == e) {
+          index = i;
         }
       }
       console.log(this.imgList);
@@ -323,6 +364,22 @@ var mysubmit = function mysubmit() {__webpack_require__.e(/*! require.ensure | c
           } } });
 
 
+    },
+
+    //输入框高度
+    heights: function heights(e) {
+      console.log(e);
+      this.inputh = e * 2 - 54;
+      //this.inputh=350(要减去下面框框的长度)
+      console.log(this.inputh);
+      this.goButtom();
+    },
+    //滚动到底部
+    goButtom: function goButtom() {
+      this.scrollToView = '',
+      this.$nextTick(function () {
+        this.scrollToView = 'msg4';
+      });
     } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
