@@ -2,23 +2,16 @@
 	<view>
 		<view class="submit">
 			<view class="submit-chat">
-				<view class="bt-img" @click="records">
-					<image :src="toc"></image>
-				</view>
+				
 				<!-- <textarea auto-height="true" class="chat-send btn"></textarea> -->
-				<u-textarea autoHeight="true" class="btn" v-if="isrecord==true" v-model="msgvalue"></u-textarea>
-				<view class="record btn" v-else>按住说话</view>
-				<view class="bt-img" @click="emoji">
-					<image src="../../static/pic/chat/emoji.png"></image>
-				</view>
+				<u-textarea autoHeight="true" class="btn"  v-model="msgvalue"></u-textarea>
+				
 				<view class="bt-img">
 					<!-- <image src="../../static/pic/chat/add.png"></image> -->
 					<u-button @click="inputs">发送</u-button>
 				</view>
 			</view>
-			<view class="emoji" v-if="isemoji==true">
-				表情
-			</view>
+			
 		</view>
 	</view>
 </template>
@@ -71,7 +64,7 @@
 			sendmsg(){
 				console.log(this.msgvalue)
 			},
-			//文字发送
+			//发送
 			inputs(){
 				if(this.msgvalue.length>0){
 					//有内容时

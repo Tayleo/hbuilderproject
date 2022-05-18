@@ -12,6 +12,8 @@ export const postallrelative = (params={},config={}) =>http.post('/RelativeContr
 //查看所有走失者的信息
 export const postallchildren = (params={},config={}) =>http.post('/ChildrenController/getallChildren',params,config)
 
+export const isStar = (params={},config={}) =>http.post('/CollectionController/isStar',params,config)
+
 //通过用户Id查看走失者详细信息
 export const postchildrenbyid = (params,config={}) =>http.post('/ChildrenController/getChildrenbyId',params,config)
 export const postRelativeById = (params,config={}) =>http.post('/RelativeController/getRelativebyid',params,config)
@@ -20,10 +22,12 @@ export const postRelativeById = (params,config={}) =>http.post('/RelativeControl
 
 //认证相关的
 //登录
+//export const postlogin = (params,config ={}) =>http.loginpost('/UsersController/login', params, config)
 export const postlogin = (params,config ={}) =>http.post('/UsersController/login', params, config)
 export const postlogininfo = (params,config ={}) =>http.post('/UsersController/info', params, config)
 //取消登录
 export const CancelBindWechat = (params,config={})=>http.post('/UsersController/CancelBindWechat', params, config)
+export const getUserName = (params,config={}) =>http.post('/UsersController/getUserName',params,config)
 
 //查看聊天消息界面
 export const postInfos = (params,config ={}) =>http.post('/MessageController/getallMessage', {"user_id":1}, config)
@@ -38,6 +42,8 @@ export const rhasrelease = (params={},config ={}) =>http.post('/RelativeControll
 
 //用户修改已经发布的信息
 export const cupdateform = (params={},config ={}) =>http.post('/ChildrenController/updateChildren',params,config)
+export const rupdateform = (params={},config ={}) =>http.post('/RelativeController/changeRelative',params,config)
+
 
 //用户修改角色
 export const changerole = (params,config ={}) =>http.post('/UsersController/changeRole',params,config)
@@ -50,6 +56,9 @@ export const sendmessage = (params,config ={}) =>http.post('/MessageController/s
 export const getMessageBefore = (params,config ={}) =>http.post('/MessageController/getMessageBefore',params,config)
 //查看最近消息列表
 export const getchatlist = (params,config ={}) =>http.post('/MessageController/getMessage',params,config)
+//查看与管理员最近消息
+export const getadminmessage = (params,config ={}) =>http.post('/MessageController/getAdminMessage',params,config)
+
 
 //收藏
 //添加收藏
@@ -57,7 +66,7 @@ export const addCol = (params,config ={}) =>http.post('/CollectionController/add
 //查询收藏列表
 export const getstarlist = (params,config ={}) =>http.post('/CollectionController/lookColList',params,config)
 //删除收藏
-export const deleteOneCol = (params,config ={}) =>http.post('/CollectionController/deleteOneCol',params,config)
+export const deletecol = (params,config ={}) =>http.post('/CollectionController/deleteOneCol',params,config)
 //批量删除收藏
 export const deleteCols = (params,config ={}) =>http.post('/CollectionController/deleteCols',params,config)
 

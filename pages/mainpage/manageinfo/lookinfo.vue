@@ -1,7 +1,7 @@
 <template>
 	
 	<view>
-		<u--form labelPosition="left" :model="model" :rules="rules" ref="form1">
+		<u--form labelPosition="left" :model="model" ref="form1">
 			<u-form-item  v-if="vuex_user.role_id==2">
 				<view class="text">个人基本信息</view>
 			</u-form-item>
@@ -18,8 +18,8 @@
 					<u-text v-else :text="releaseinfo.childrenName"></u-text>
 				</u-form-item>
 				<u-form-item label="性别" prop="userInfo.sex"  >
-					<u-text v-if="releaseinfo.gender==1" text="男"></u-text>
-					<u-text v-else="releaseinfo.gender" text="女"></u-text>
+					<u-text v-if="releaseinfo.gender==1||releaseinfo.childrenGender==1" text="男"></u-text>
+					<u-text v-else text="女"></u-text>
 				</u-form-item>
 				<u-form-item  label="年龄" prop="age">
 					<u-text v-if="vuex_user.role_id==2" :text="releaseinfo.age"></u-text>	
@@ -85,7 +85,10 @@
 			
 			
 			<view style="height:110rpx;display: flex;align-items: center;justify-content: center;" >
-				<button @click="changeform()" style="width: 100px;text-align: center; color: white;background-color:#12AE85;">修改信息</button>
+				<button v-if="isrelease==0" style="width: 100px;text-align: center; color: white;background-color:#12AE85;">待审核</button>
+				<button  v-else @click="changeform()" style="width: 100px;text-align: center; color: white;background-color:#12AE85;">修改信息</button>
+				<!-- <button v-else-if="isrelease==0"  @click="changeform()"style="width: 100px;text-align: center; color: white;background-color:#12AE85;">已发布,点击修改</button>
+				 -->
 			</view>
 			
 		</u--form>
@@ -98,7 +101,7 @@
 		data() {
 			return {
 				/* 当前用户是否已发布消息，如果发布则查询，未发布则可以跳转到发布信息页面 */
-				isrelease:false,
+				isrelease:null,
 				releaseinfo:{},
 				
 			}
@@ -107,8 +110,14 @@
 		// 	this.lookmyrelease();
 		// }
 		onLoad() {
+			//跳转到主界面
 			
 			this.lookmyrelease();
+		},
+		onUnload: function () {
+		  	uni.switchTab({
+		  		url: '/pages/mypages/users'
+		  	});
 		},
 		methods: {
 			lookmyrelease(){
@@ -119,6 +128,7 @@
 					case 2:
 						postchildrenbyid({user_id:this.vuex_user.user_id}).then((res)=>{
 							this.releaseinfo=res.data;
+							this.isrelease=res.data.isRelease
 							console.log(this.releaseinfo)
 						}).catch(()=>{
 							
@@ -127,6 +137,7 @@
 					case 3:
 					
 						postRelativeById({user_id:this.vuex_user.user_id}).then((res)=>{
+							this.isrelease=res.data.isRelease
 							this.releaseinfo=res.data;
 							console.log(this.releaseinfo)
 						}).catch(()=>{

@@ -14,24 +14,6 @@
 	},
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 		{
-		    "path" : "pages/chat/message",
-		    "style" :                                                                                    
-		    {
-		        
-		        "enablePullDownRefresh": false
-		    }
-		    
-		},
-		{
-		    "path" : "pages/mypages/users",
-		    "style" :                                                                                    
-		    {
-		        "navigationBarTitleText": "个人中心",
-		        "enablePullDownRefresh": false
-		    }
-		},
-		
-		{
 		    "path" : "pages/mainpage/mainpage",
 		    "style" :                                                                                    
 		    {
@@ -41,6 +23,37 @@
 		    
 		}
 		,
+		{
+		    "path" : "pages/match/match",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "自动匹配",
+		        "enablePullDownRefresh": false
+		    }
+		    
+		}
+		,
+		{
+		    "path" : "pages/mypages/users",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "个人中心",
+		        "enablePullDownRefresh": false
+		    }
+		},
+		
+		
+		{
+		    "path" : "pages/chat/message",
+		    "style" :                                                                                    
+		    {
+		        
+		        "enablePullDownRefresh": false
+		    }
+		    
+		},
+		
+		
 		{
 		    "path" : "pages/mainpage/manageinfo/updateinfo",
 		    "style" :                                                                                    
@@ -68,16 +81,7 @@
 		    }
 		    
 		},
-		{
-		    "path" : "pages/match/match",
-		    "style" :                                                                                    
-		    {
-		        "navigationBarTitleText": "自动匹配",
-		        "enablePullDownRefresh": false
-		    }
-		    
-		}
-		,
+		
 		{
 		    "path" : "pages/chat/chat",
 		    "style" :                                                                                    

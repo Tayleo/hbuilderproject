@@ -1,6 +1,6 @@
 <template>
 	<view >
-		<view v-for="(item,index) in starlist">
+		<view v-for="(item,index) in starlist" @click="moreinfo(item)">
 			<view style="margin-left: 20rpx;">{{item.match_time}}</view>
 			<view class="list">
 				<view class="list-left">
@@ -8,7 +8,8 @@
 				</view>
 				<view class="list-right">
 					<view class="top">
-						<view class="name">{{item.name}}</view> 					
+						<view class="name">{{item.name}}</view> 
+						<view class="starimg" @click.stop="deletematchs(item.user_id)" >删除</view>
 					</view>
 					<view class="text">{{item.birthday}}</view>
 					<view class="details" >{{item.details}}</view>
@@ -22,30 +23,35 @@
 </template>
 
 <script>
-	import {getmatchlist} from '../../common/config/api.js'
+	import {getmatchlist,deleteMatch} from '../../common/config/api.js'
 	import myfun from '../../common/js/myfun.js'
 	export default {
 		data() {
 			return {
 				oldtime:new Date(),
 				starlist:[
-					{
-						avatarurl:'https://cdn.uviewui.com/uview/album/1.jpg',
-						name:'hahha',
-						details:'',
-						birthday:'',
-						user_id:'',
-						match_time:'',
-					},],
+					],
 			}
 		},
 		onLoad() {
+			
+		},
+		onShow() {
 			this.getmycols();
 		},
 		methods: {
+			 
+			deletematchs(e){
+				//删除收藏记录
+				deleteMatch({user_id:this.vuex_user.user_id,match_id:e}).then((res=>{
+					console.log("删除成功")
+					this.getmycols()
+				}))
+			},
+			
 			getmycols(){
 				//查询我的匹配
-				getmatchlist({user_id:1}).then((res)=>{
+				getmatchlist({user_id:this.vuex_user.user_id}).then((res)=>{
 					this.starlist=res.data
 					this.starlist.sort(function(a, b) {
 					    return b.match_time< a.match_time? -1 : 1
@@ -68,7 +74,18 @@
 				}).catch((err)=>{
 					console.log(err)
 				})
-			}
+			},
+			//跳转到用户详情界面
+			moreinfo(item){
+				console.log(item);
+				uni.$u.route({
+					url: 'pages/info/info',
+					params: {
+						user_id:item.user_id,
+						role_id:item.user_role
+					}
+				})
+			},
 		}
 	}
 </script>
@@ -121,9 +138,9 @@
 		}
 	}
 	.starimg{
-		width: 80rpx;
-		height: 80rpx;
-		float: left;
+		width: 100rpx;
+		float: right;
+		color: #555555;
 	}
 	.details{
 		font-size: 36rpx;

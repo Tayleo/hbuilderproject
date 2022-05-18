@@ -1,14 +1,24 @@
 <script>
 	export default {
+		globalData: {  
+			websocket:null,
+			
+			
+		},
+		
 		onLaunch: function() {
+			
 			console.log('App Launch')
 		},
 		onShow: function() {
-			console.log('App Show')
+			
 		},
 		onHide: function() {
 			console.log('App Hide')
-		}
+		},
+		
+
+		
 	}
 </script>
 

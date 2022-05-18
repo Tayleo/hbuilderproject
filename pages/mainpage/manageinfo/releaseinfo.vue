@@ -129,6 +129,8 @@
 				value1: Number(new Date()),
 				fileList1: [],
 				imgurl:'',
+				imgtype:'',
+				imgurlbefore:'',
 				model: {
 					userInfo: {
 						name: '',
@@ -189,11 +191,14 @@
 			},
 			
 			async submitform(){
-				console.log(this.model);
+				console.log(this.fileList1);
 				//上传图片
-				if(this.fileList1.length>0){
+				if(this.fileList1[0]!=null){
+					console.log("hhhhhhhhhhhhhhhhhh")
 					const result = await this.uploadFilePromise(this.fileList1[0].url)
+					console.log(result)
 					this.imgurl=result
+					
 				}
 				if(this.vuex_user.role_id==2){
 					cpostform({ forminfo:this.model,user_id:this.vuex_user.user_id,imgurl:this.imgurl}).then((res)=>{
@@ -262,8 +267,10 @@
 						url: 'http://localhost:8081/UsersController/upload',
 						filePath: url,
 						name: 'file',
+						
 						success: (res) => {
 							resolve(res.data)
+							console.log(res.data)
 						}
 					});
 				})

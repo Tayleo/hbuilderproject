@@ -2,7 +2,9 @@
 	<view>
 		<view class="header">
 			<view class="userinfo" >
-				<view class="face"><image :src="vuex_user.user_avator_url ||'/static/img/head.png'"></image></view>
+				<view v-if="vuex_hasLogin" class="face"><image :src="vuex_user.user_avator_url"></image></view>
+				<view v-else class="face"><image src="../../static/img/head.png"></image></view>
+				
 				<view class="info" v-if="vuex_hasLogin">
 					<view class="username">{{vuex_user.user_nickname}}</view>
 					<view class="integral" v-if="vuex_user.role_id==2">身份  :  走失者</view>
@@ -18,19 +20,7 @@
 				</view>
 			</view>
 			</view>
-		<!-- <view class="orders">
-			
-			<view class="box" >
-				<view class="label" v-for="(row, index) in orderTypeLise2" :key="row.name" hover-class="hover" @tap="toOrderType2(index)">
-					<view class="icon">
-						<view class="badge" v-if="row.badge > 0">{{ row.badge }}</view>
-						<text class="yzb label-icon" :class="row.icon"></text>
-					</view>
-					{{ row.name }}
-				</view>
-			</view>
-			
-		</view> -->
+		
 		<view class="list" v-for="(list, list_i) in severList" :key="list_i">
 			<view class="li" v-for="(li, li_i) in list" @tap="toPage(list_i, li_i)" v-bind:class="{ noborder: li_i == list.length - 1 }" hover-class="hover" :key="li.name">
 				<view class="icon"><image :src="'../../static/HM-PersonalCenter/sever/' + li.icon"></image></view>
@@ -42,17 +32,18 @@
 		<view>
 			<u-picker :show="showrole" ref="uPicker" 
 			:defaultIndex='defaultIndex'
-			:columns="columnroles" @confirm="roleconfirm" @cancel="cancel">
+			:columns="columnroles" @confirm="confirmrole" @change="roleconfirm" @cancel="cancel" confirmColor="#12AE85">
 			</u-picker>
 		</view>
 	</view>
 </template>
 <script>
 import {postlogin,CancelBindWechat,chasrelease,changerole,rhasrelease} from '../../common/config/api.js';
+import wsRequest from '../../common/js/websocket.js';
 export default {
 	data() {
 		return {
-			defaultIndex:[2],
+			defaultIndex:[],
 			showrole:false,
 			applywx:false,
 			// orderTypeLise2: [
@@ -72,7 +63,7 @@ export default {
 				],
 				[
 					// { name: '求职意向', icon: 'point.png', url: this.$mRoutesConfig.editExpect}, 
-					{ name: '意见反馈', show:true,icon: 'opinion.png', url:null}, 
+					// { name: '意见反馈', show:true,icon: 'opinion.png', url:null}, 
 					{ name: '关于我们', show:true,icon: 'about.png', url:"zhaopin" },
 					{ name: '退出登录', show:true,icon: 'momey.png', url: null},],
 					
@@ -87,10 +78,15 @@ export default {
 		// if (this.hasLogin) {
 		// 	this.getUserInfo();
 		// }
+		// uni.$u.vuex('vuex_sessionID','')
+		// uni.$u.vuex('vuex_hasLogin', false);
+		this.defaultIndex[0]=this.vuex_user.role_id-2
 		console.log('是否一登录'+this.vuex_hasLogin);
+		
 	},
 	methods: {
-			//微信信息授权
+		
+		//微信信息授权
 		wxlogin(){
 			uni.getUserProfile({
 				desc:"微信信息授权",
@@ -98,28 +94,37 @@ export default {
 					
 					wx.login({
 						 success: res=> {
-							
+							 
 							//this.onShow();
 							//将获取到的信息传入后端，后端存入数据库以及解密openid
 							postlogin({code:res.code,userinfo:infoRes}).then((res)=>{
+								//console.log("vuex_sessionID"+res.header)
+								
 								//登录成功，修改hasLogin标志为已登录,
 								uni.$u.vuex('vuex_hasLogin', true);
 								//可以拿回来session_key以及openid,将openid存入全局变量
-								console.log(res.data.open_id);
+								//console.log(res.data.open_id);
 								uni.$u.vuex('vuex_user.open_id',res.data.open_id)
 								//存用户角色信息(角色以及id)
 								uni.$u.vuex('vuex_user.role_id',res.data.role_id)
 								uni.$u.vuex('vuex_user.user_id',res.data.user_id)
+								
+								uni.$u.vuex('vuex_token',res.data.token)
 								//将个人信息传递给后端并且存入数据库
 								uni.$u.vuex('vuex_user.user_nickname', infoRes.userInfo.nickName)
 								uni.$u.vuex('vuex_user.user_avator_url',infoRes.userInfo.avatarUrl)
-								//uni.$u.vuex('vuex_token',res.token)
+								uni.$u.vuex("vuex_haswebsocket",false)
+								if(this.vuex_haswebsocket==false){  //如果没连接websocket
+									//this.websocket=new wsRequest("ws://localhost:8081/webSocket",5000,this.vuex_user.user_id)
+									uni.$u.vuex("vuex_websocket",new wsRequest("ws://localhost:8081/webSocket",5000,this.vuex_user.user_id))
+									uni.$u.vuex("vuex_haswebsocket",true)
+								}
 							}).catch((err)=>{
 								console.log(err);
 							})
 							
-							console.log(this.vuex_user);
-							console.log(this.vuex_hasLogin);
+							// console.log(this.vuex_user);
+							// console.log(this.vuex_hasLogin);
 						 }
 					 })
 				},
@@ -145,7 +150,18 @@ export default {
 						title: '请先登录',
 						duration: 2000
 					});
+					return;
 				}
+				
+				if(li_i!=0&&(this.vuex_user.role_id==1||this.vuex_user.role_id==4)){
+					uni.showToast({
+						icon:'error',
+						title: '无此权限',
+						duration: 2000
+					});
+					return;
+				}
+				
 				if(li_i==0){
 					this.showrole=true;
 					console.log(li_i)
@@ -190,13 +206,18 @@ export default {
 					console.log(li_i)
 				}
 			}else{
+				if(this.vuex_hasLogin==false){
+					uni.showToast({
+						icon:'error',
+						title: '请先登录',
+						duration: 2000
+					});
+					return;
+				}
 				if(li_i==0){
 					console.log(li_i)
-				}else if(li_i==1){
-					
-					
-					console.log(li_i)
 				}else{
+					//退出登录
 					console.log(li_i)
 					if(this.vuex_hasLogin){
 						//uni.$u.vuex('vuex_user',null)
@@ -211,6 +232,8 @@ export default {
 							uni.$u.vuex('vuex_user.user_avator_url',null)
 							uni.$u.vuex('vuex_user.role_id',null)
 							uni.$u.vuex('vuex_user.user_id',null)
+							uni.$u.vuex('vuex_token',null)
+							uni.$u.vuex('vuex_sessionID','')
 							//this.onShow();
 						}).catch((err)=>{
 							console.log(err)
@@ -225,10 +248,13 @@ export default {
 		
 		
 		cancel(){
-			console.log("quxiao")
+			console.log("取消")
 			this.showrole=false
 		},
-		
+		confirmrole(){
+			console.log("确认,但不改变,不做任何操作")
+			this.showrole=false
+		},
 		roleconfirm(e){
 			// const {
 			// 	index,

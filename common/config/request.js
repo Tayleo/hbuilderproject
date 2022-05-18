@@ -6,7 +6,9 @@ module.exports = (vm) => {
 	/* config 为默认全局配置*/
 	config.baseURL = 'http://localhost:8081';/* 根域名 */
 	//baseURL: '';
-	header: {};
+	header: {
+		// token:vm.vuex_token
+	};
 	// method: 'GET';
 	dataType: 'json';
 	// #ifndef MP-ALIPAY
@@ -48,7 +50,9 @@ module.exports = (vm) => {
 		
 		// 方式一，存放在vuex的token，假设使用了uView封装的vuex方式
 		// 见：https://uviewui.com/components/globalVariable.html
-		// config.header.token = vm.token;
+		config.header.token = vm.vuex_token;
+		//把存储的cookie也带上，shiro才能够正确判断
+		config.header.cookie = vm.vuex_sessionID;
 		
 		// 方式二，如果没有使用uView封装的vuex方法，那么需要使用$store.state获取
 		// config.header.token = vm.$store.state.token;
@@ -66,7 +70,7 @@ module.exports = (vm) => {
 		if(config?.custom?.auth) {
 			// 可以在此通过vm引用vuex中的变量，具体值在vm.$store.state中
 			//config.header.token = vm.$store.state.userInfo.token
-			config.header.Authorization="Bearer "+vm.access_token
+			config.header.Authorization="Bearer "+vm.vuex_token
 		}
 		//config.header.Authorization="Bearer "+vm.access_token
 	    return config 
@@ -76,6 +80,14 @@ module.exports = (vm) => {
 	
 	// 响应拦截
 	uni.$u.http.interceptors.response.use((response) => { /* 对响应成功做点什么 可使用async await 做异步操作*/
+		
+		//如果第一次登录，即sessiOnID为空，那么将response 的cookie存入全局变量、
+		//小程序不自带 cookie 的管理，导致 Shiro 下发的 SessionId,
+		//再小程序下次请求时，不会带上之前的 SessionId,所以进行手动保存，之后请求需要带上
+		if(vm.vuex_sessionID==''){
+			uni.$u.vuex('vuex_sessionID',response.header["Set-Cookie"])
+			console.log(vm.vuex_sessionID)
+		}					
 		
 		const data = response.data
 		

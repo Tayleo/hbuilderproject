@@ -96,19 +96,19 @@ var components
 try {
   components = {
     uRow: function() {
-      return Promise.all(/*! import() | uview-ui/components/u-row/u-row */[__webpack_require__.e("common/vendor"), __webpack_require__.e("uview-ui/components/u-row/u-row")]).then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-row/u-row.vue */ 399))
+      return Promise.all(/*! import() | uview-ui/components/u-row/u-row */[__webpack_require__.e("common/vendor"), __webpack_require__.e("uview-ui/components/u-row/u-row")]).then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-row/u-row.vue */ 295))
     },
     uCol: function() {
-      return Promise.all(/*! import() | uview-ui/components/u-col/u-col */[__webpack_require__.e("common/vendor"), __webpack_require__.e("uview-ui/components/u-col/u-col")]).then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-col/u-col.vue */ 407))
+      return Promise.all(/*! import() | uview-ui/components/u-col/u-col */[__webpack_require__.e("common/vendor"), __webpack_require__.e("uview-ui/components/u-col/u-col")]).then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-col/u-col.vue */ 303))
     },
     "u-Image": function() {
-      return Promise.all(/*! import() | uview-ui/components/u--image/u--image */[__webpack_require__.e("common/vendor"), __webpack_require__.e("uview-ui/components/u--image/u--image")]).then(__webpack_require__.bind(null, /*! @/uview-ui/components/u--image/u--image.vue */ 415))
+      return Promise.all(/*! import() | uview-ui/components/u--image/u--image */[__webpack_require__.e("common/vendor"), __webpack_require__.e("uview-ui/components/u--image/u--image")]).then(__webpack_require__.bind(null, /*! @/uview-ui/components/u--image/u--image.vue */ 311))
     },
     uTabbar: function() {
-      return Promise.all(/*! import() | uview-ui/components/u-tabbar/u-tabbar */[__webpack_require__.e("common/vendor"), __webpack_require__.e("uview-ui/components/u-tabbar/u-tabbar")]).then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-tabbar/u-tabbar.vue */ 420))
+      return Promise.all(/*! import() | uview-ui/components/u-tabbar/u-tabbar */[__webpack_require__.e("common/vendor"), __webpack_require__.e("uview-ui/components/u-tabbar/u-tabbar")]).then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-tabbar/u-tabbar.vue */ 412))
     },
     uTabbarItem: function() {
-      return Promise.all(/*! import() | uview-ui/components/u-tabbar-item/u-tabbar-item */[__webpack_require__.e("common/vendor"), __webpack_require__.e("uview-ui/components/u-tabbar-item/u-tabbar-item")]).then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-tabbar-item/u-tabbar-item.vue */ 428))
+      return Promise.all(/*! import() | uview-ui/components/u-tabbar-item/u-tabbar-item */[__webpack_require__.e("common/vendor"), __webpack_require__.e("uview-ui/components/u-tabbar-item/u-tabbar-item")]).then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-tabbar-item/u-tabbar-item.vue */ 420))
     }
   }
 } catch (e) {
@@ -252,8 +252,10 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var _api = __webpack_require__(/*! ../../common/config/api.js */ 147);
-var _myfun = _interopRequireDefault(__webpack_require__(/*! ../../common/js/myfun.js */ 146));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };} //
+
+
+var _api = __webpack_require__(/*! ../../common/config/api.js */ 146);
+var _myfun = _interopRequireDefault(__webpack_require__(/*! ../../common/js/myfun.js */ 172));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };} //
 //
 //
 //
@@ -334,15 +336,28 @@ var _myfun = _interopRequireDefault(__webpack_require__(/*! ../../common/js/myfu
 //
 //
 //
-var _default = { data: function data() {return { type: 0, user_id: 1, tabber_value: 0, chaticon: '../../../static/icon/Chat-outlined.png', staricon: '../../../static/icon/Star-outlined.png', baseinfo: {}, name: '', lostinfoList: [{ name: '走失时间', info: '' }, { name: '走失地点', info: '' }, { name: '走失穿着', info: '' }, { name: '走失身高', info: '' }, { name: '走失详情', info: '' }, { name: '个人特征', info: '' }], moreinfoList: [{ name: '电话', show: true, info: '' }, { name: '邮箱', show: true, info: '' }, { name: '与被寻人关系', show: true, info: '' }], childrenmoreinfo: [{ name: '电话', show: true, info: '' }, { name: '邮箱', show: true, info: '' }] };}, onLoad: function onLoad(option) {//option为object类型，会序列化上个页面传递的参数
-    this.user_id = parseInt(option.user_id);this.type = parseInt(option.type); // this.user_id=5;
+//
+//
+var _default = { data: function data() {return { role_id: null, type: 0, user_id: 0, tabber_value: 0, chaticon: '../../../static/icon/Chat-outlined.png', staricon: '../../../static/icon/Star-outlined.png', baseinfo: {}, name: '', lostinfoList: [{ name: '走失时间', info: '' }, { name: '走失地点', info: '' }, { name: '走失穿着', info: '' }, { name: '走失身高', info: '' }, { name: '走失详情', info: '' }, { name: '个人特征', info: '' }], moreinfoList: [{ name: '电话', show: true, info: '' }, { name: '邮箱', show: true, info: '' }, { name: '与被寻人关系', show: true, info: '' }], childrenmoreinfo: [{ name: '电话', show: true, info: '' }, { name: '邮箱', show: true, info: '' }] };}, onLoad: function onLoad(option) {//option为object类型，会序列化上个页面传递的参数
+    this.user_id = parseInt(option.user_id);this.type = parseInt(option.type);this.role_id = this.type + 2;this.role_id = parseInt(option.role_id); // this.user_id=5;
     // this.type=0;
-    this.landmore();}, methods: { landmore: function landmore() {var _this = this;if (this.type == 0) {//发送请求给children
+    this.landmore();}, methods: { landmore: function landmore() {var _this = this;if (this.type == 0 || this.role_id == 2) {//发送请求给children
         (0, _api.postchildrenbyid)({ user_id: this.user_id }).then(function (res) {_this.name = res.data.realName;_this.baseinfo = res.data;_this.lostinfoList[0].info = _this.baseinfo.lostTime;_this.lostinfoList[1].info = _this.baseinfo.lostAddress;_this.lostinfoList[2].info = _this.baseinfo.lostCloth;_this.lostinfoList[3].info = _this.baseinfo.lostHeight;_this.lostinfoList[4].info = _this.baseinfo.details;_this.lostinfoList[5].info = _this.baseinfo.features;_this.childrenmoreinfo[0].info = _this.baseinfo.phone;_this.childrenmoreinfo[1].info = _this.baseinfo.eMail; // this.moreinfoList[2].info=this.baseinfo.phone
           // this.moreinfoList[3].info=this.baseinfo.phone
           // console.log(this.baseinfo)
         }).catch(function () {console.log('获取数据失败');});} else {//发送请求给relative
-        (0, _api.postRelativeById)({ user_id: this.user_id }).then(function (res) {console.log(res);_this.name = res.data.childrenName;_this.baseinfo = res.data;_this.lostinfoList[0].info = _this.baseinfo.lostTime;_this.lostinfoList[1].info = _this.baseinfo.lostAddress;_this.lostinfoList[2].info = _this.baseinfo.lostCloth;_this.lostinfoList[3].info = _this.baseinfo.lostHeight;_this.lostinfoList[4].info = _this.baseinfo.details;_this.lostinfoList[5].info = _this.baseinfo.features;_this.moreinfoList[0].info = _this.baseinfo.phone;_this.moreinfoList[1].info = _this.baseinfo.eMail;_this.moreinfoList[2].info = _this.baseinfo.relation;});}}, chat: function chat() {console.log(this.user_id);uni.$u.route({ url: '/pages/chat/message', params: {
+        (0, _api.postRelativeById)({ user_id: this.user_id }).then(function (res) {console.log(res.data);_this.name = res.data.childrenName;_this.baseinfo = res.data;_this.lostinfoList[0].info = _this.baseinfo.lostTime;_this.lostinfoList[1].info = _this.baseinfo.lostAddress;_this.lostinfoList[2].info = _this.baseinfo.lostCloth;_this.lostinfoList[3].info = _this.baseinfo.lostHeight;_this.lostinfoList[4].info = _this.baseinfo.details;_this.lostinfoList[5].info = _this.baseinfo.features;_this.moreinfoList[0].info = _this.baseinfo.phone;_this.moreinfoList[1].info = _this.baseinfo.eMail;_this.moreinfoList[2].info = _this.baseinfo.relation;});} //查询用户是否被收藏
+      (0, _api.isStar)({ user_id: this.vuex_user.user_id, star_id: this.user_id }).then(function (res) {console.log(res.data);
+        if (res.data == true) {//如果已经被收藏
+          _this.staricon = "../../../static/icon/Star-filled.png";
+        }
+      });
+    },
+    chat: function chat() {
+      console.log(this.user_id);
+      uni.$u.route({
+        url: '/pages/chat/message',
+        params: {
           accept_id: this.user_id,
           avatar_url: this.baseinfo.picUrl,
           name: this.name } });
@@ -354,13 +369,13 @@ var _default = { data: function data() {return { type: 0, user_id: 1, tabber_val
       if (this.staricon == "../../../static/icon/Star-outlined.png") {
         //点击收藏
         var time = _myfun.default.createtime();
-        (0, _api.addCol)({ user_id: 1, col_id: this.user_id, time: time }).then(function () {
+        (0, _api.addCol)({ user_id: this.vuex_user.user_id, col_id: this.user_id, time: time }).then(function () {
           console.log("收藏成功");
           _this2.staricon = "../../../static/icon/Star-filled.png";
         });
       } else {
         //再次点击取消收藏
-        (0, _api.deleteOneCol)({ user_id: 1, col_id: this.user_id }).then(function () {
+        (0, _api.deleteOneCol)({ user_id: this.vuex_user.user_id, col_id: this.user_id }).then(function () {
           console.log("取消收藏成功");
           _this2.staricon = "../../../static/icon/Star-outlined.png";
         });

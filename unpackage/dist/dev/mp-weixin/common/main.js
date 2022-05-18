@@ -15,20 +15,29 @@ var _uviewUi = _interopRequireDefault(__webpack_require__(/*! uview-ui */ 12));
 
 
 
+
+
+
+
+
+
+
 var _store = _interopRequireDefault(__webpack_require__(/*! @/store */ 136));
 
 
 
-var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 3));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}wx.__webpack_require_UNI_MP_PLUGIN__ = __webpack_require__;_vue.default.use(_uviewUi.default);var vuexStore = __webpack_require__(/*! @/store/$u.mixin.js */ 138);_vue.default.mixin(vuexStore); // 假设您项目中已使用VueX
-_vue.default.prototype.$store = _store.default;_vue.default.config.productionTip = false;
-_App.default.mpType = 'app';
-var app = new _vue.default(_objectSpread({
-  store: _store.default },
-_App.default));
-
+var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 3));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}wx.__webpack_require_UNI_MP_PLUGIN__ = __webpack_require__;_vue.default.use(_uviewUi.default);var vuexStore = __webpack_require__(/*! @/store/$u.mixin.js */ 138);_vue.default.mixin(vuexStore); //将websocket挂载在全局上
+// import wsRequest from './common/js/websocket.js' ;
+// Vue.prototype.$wsRequest=wsRequest
+// import ws from './common/js/socket.js' //找好自己的路径
+// Vue.prototype.$ws = ws
+// 假设您项目中已使用VueX
+_vue.default.prototype.$store = _store.default;_vue.default.config.productionTip = false;_App.default.mpType = 'app';var app = new _vue.default(_objectSpread({ store: _store.default }, _App.default));
 
 // 引入请求封装，将app参数传递到配置中
 __webpack_require__(/*! ./common/config/request.js */ 139)(app);
+
+
 
 
 createApp(app).$mount();
@@ -104,11 +113,18 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _default =
 {
+  globalData: {
+    websocket: null },
+
+
+
+
   onLaunch: function onLaunch() {
+
     console.log('App Launch');
   },
   onShow: function onShow() {
-    console.log('App Show');
+
   },
   onHide: function onHide() {
     console.log('App Hide');

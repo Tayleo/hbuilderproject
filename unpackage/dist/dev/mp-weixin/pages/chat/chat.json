@@ -1,7 +1,5 @@
 {
   "navigationBarTitleText": "信息",
   "enablePullDownRefresh": false,
-  "usingComponents": {
-    "u-search": "/uview-ui/components/u-search/u-search"
-  }
+  "usingComponents": {}
 }

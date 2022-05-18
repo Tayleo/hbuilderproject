@@ -1,11 +1,25 @@
 <template>
 	<view>
 		<view>
-			<u-search placeholder="搜索联系人" v-model="search" :clearabled="true" actionText="取消"></u-search>
+			
+			<view style="padding-left: 20rpx;font-weight: bold;">消息列表</view>
+			
 		</view>
 		<view class="chats"  >
+			<view class="chat-list"  @click="adminmessage()">
+				<view class="chat-list-l">
+					<!-- <text class="tip">1</text> -->
+					<image src='../../static/img/admin.png'></image>
+				</view>
+				<view class="chat-list-r">
+					<view class="top">
+						<view class="name">管理员</view>
+						<view class="time">{{ amdinMessage.time}}</view>
+					</view>
+					<view class="content">{{amdinMessage.content}}</view>
+				</view>
+			</view>
 			<view class="chat-list" v-for="(item,index) in chatlist"  @click="checkmessage(item)">
-			
 				<view class="chat-list-l">
 					<!-- <text class="tip">1</text> -->
 					<image :src='item.avatar_url'></image>
@@ -25,11 +39,13 @@
 </template>
 
 <script>
-import {getchatlist} from '../../common/config/api.js'
+import {getchatlist,getadminmessage} from '../../common/config/api.js'
+import wsRequest from '../../common/js/websocket.js' 
 import myfun from '../../common/js/myfun.js';
 export default{
 	data(){
 		return {
+			amdinMessage:[],
 			search:'',
 			chatlist:[
 				// {info_id:'info_id',
@@ -46,7 +62,7 @@ export default{
 				// user_nickname:'小陈菜',
 				// avatar_url:'../../static/pic/people2.webp',
 				// time:'2020-10-02',
-				// content:'你个傻逼玩意儿，老陈菜',
+				// content:'你个玩意儿，老陈菜',
 				// status:'0',
 				// msgtype:'0',
 				// },
@@ -66,11 +82,36 @@ export default{
 	},
 	
 	onLoad (option) {
+		//引用全局websocket并发送消息
+		// console.log(getApp().globalData.text)
+		//  let msg="{acceptId:2,msgtype:0,info_content:哈哈哈哈}";
+		// getApp().globalData.websocket.socketTask.send({
+		// 	data:msg,
+		// })
+		
+		// uni.$u.vuex("vuex_haswebsocket",false)
+		// if(this.vuex_haswebsocket==false){  //如果没连接websocket
+		// 	//this.websocket=new wsRequest("ws://localhost:8081/webSocket",5000,this.vuex_user.user_id)
+		// 	uni.$u.vuex("vuex_websocket",new wsRequest("ws://localhost:8081/webSocket",5000,this.vuex_user.user_id))
+		// 	uni.$u.vuex("vuex_haswebsocket",true)
+		// }
+		
 		
 	},
 	methods: {
 		getlist(){
-			getchatlist({user_id:1}).then((res)=>{
+			
+			//获取管理员消息列表
+			getadminmessage({user_id:this.vuex_user.user_id}).then((res)=>{
+				console.log(res.data)
+				if(res.data!=null){
+					this.amdinMessage=res.data
+					this.amdinMessage.time=myfun.chatTime(this.amdinMessage.time) //格式化时间
+				}
+			})
+			
+			//获取与其他用户消息列表
+			getchatlist({user_id:this.vuex_user.user_id}).then((res)=>{
 				console.log(res.data)
 				this.chatlist=res.data
 				for (var i = 0; i < this.chatlist.length; i++) {
@@ -81,15 +122,24 @@ export default{
 			})
 		},
 		checkmessage(e){
-			
 			uni.$u.route({
 				url:'pages/chat/message',
 				params:{
 					accept_id:e.user_id,
-					avatar_url:e.avatar_url
+					avatar_url:e.avatar_url,
+					name:e.user_nickname
 				}
 			})
-			
+		},
+		adminmessage(){
+			uni.$u.route({
+				url:'pages/chat/message',
+				params:{
+					accept_id:0,
+					avatar_url:"../../static/img/admin.png",
+					name:"管理员"
+				}
+			})
 		}
 	},
 }

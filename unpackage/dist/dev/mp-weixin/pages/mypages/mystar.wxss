@@ -71,9 +71,9 @@ page {
   margin: 5rpx;
 }
 .starimg {
-  width: 80rpx;
-  height: 80rpx;
-  float: left;
+  width: 100rpx;
+  float: right;
+  color: #555555;
 }
 .details {
   font-size: 36rpx;

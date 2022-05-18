@@ -1,12 +1,12 @@
 {
     "pages": [
-        "pages/chat/message",
-        "pages/mypages/users",
         "pages/mainpage/mainpage",
+        "pages/match/match",
+        "pages/mypages/users",
+        "pages/chat/message",
         "pages/mainpage/manageinfo/updateinfo",
         "pages/mainpage/manageinfo/releaseinfo",
         "pages/mainpage/manageinfo/lookinfo",
-        "pages/match/match",
         "pages/chat/chat",
         "pages/info/info",
         "pages/mypages/mystar",

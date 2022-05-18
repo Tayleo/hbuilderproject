@@ -110,17 +110,18 @@
 			</view>
 			<view v-else></view>
 			
-			
-			<view style="height:110rpx;display: flex;align-items: center;justify-content: center;" >
-				<button @click="submitform()" style="width: 100px;text-align: center; color: white;background-color:#12AE85;">提交修改</button>
+			<view>
+				<view style="height:110rpx;display: flex;align-items: center;justify-content: center;" >
+					
+					<button @click="submitform()" style="width: 100px;text-align: center; color: white;background-color:#12AE85;">提交修改</button>
+				</view>
 			</view>
-			
 		</u--form>
 	</view>
 </template>
 
 <script>
-	import {cpostform,rpostform,postchildrenbyid,postRelativeById} from "../../../common/config/api.js"
+	import {cupdateform,rupdateform,cpostform,rpostform,postchildrenbyid,postRelativeById} from "../../../common/config/api.js"
 	import myfun from '../../../common/js/myfun.js'
 	export default {
 		data() {
@@ -128,16 +129,19 @@
 				releaseinfo:{},
 				showcalendar:false,
 				showSex: false,
+				isrelease:null,
 				value1: Number(new Date()),
 				fileList1: [{
 					url:''
 				}],
 				imgurl:'',
+				imgurlbefore:'',
+				imgtype:'',
 				model: {
 					userInfo: {
 						name: '',
 						sex: '',
-						age: '',
+						age: 0,
 						birthday:'',
 						address :'',
 						phone:'',
@@ -163,6 +167,9 @@
 						required: true,
 						message: '请填写姓名',
 						trigger: ['blur', 'change']
+					},
+					'userInfo.name':{
+						type:'integer'
 					},
 					'userInfo.sex': {
 						type: 'string',
@@ -191,8 +198,10 @@
 					case 2:
 						postchildrenbyid({user_id:this.vuex_user.user_id}).then((res)=>{
 							this.fileList1[0].url=res.data.picUrl
+							this.imgurlbefore=res.data.picUrl
 							console.log(res.data)
 							this.model=myfun.chtransform(res.data)
+							this.isrelease=res.data.isRelease
 							console.log(this.releaseinfo)
 						}).catch(()=>{
 							
@@ -200,7 +209,11 @@
 						break;
 					case 3:
 						postRelativeById({user_id:this.vuex_user.user_id}).then((res)=>{
+							this.fileList1[0].url=res.data.childrenUrl
+							this.imgurlbefore=res.data.childrenUrl
 							this.model=myfun.retransform(res.data)
+							this.isrelease=res.data.isRelease
+							this.imgurl=res.data.childrenUrl
 						}).catch(()=>{
 							
 						})
@@ -228,36 +241,40 @@
 			async submitform(){
 				console.log(this.model);
 				//上传图片
-				if(this.fileList1.length>0){
+				
+				if(this.fileList1[0]!=null&&this.fileList1[0].url!=this.imgurlbefore){
+					
 					const result = await this.uploadFilePromise(this.fileList1[0].url)
 					this.imgurl=result
 					console.log("this is imgurl"+this.imgurl)
 				}
 				
+				
 				if(this.vuex_user.role_id==2){
-					cpostform({ forminfo:this.model,user_id:this.vuex_user.user_id,imgurl:this.imgurl}).then((res)=>{
-
+					cupdateform({ forminfo:this.model,user_id:this.vuex_user.user_id,imgurl:this.imgurl}).then((res)=>{
 						uni.showToast({
 							title: '提交信息成功',
 							duration: 2000
-						});
-						uni.switchTab({
-							url: '/pages/mypages/users'
 						})
+						uni.$u.route('/pages/mainpage/manageinfo/lookinfo');
+						
+						//跳转回查看信息界面
+						// uni.switchTab({
+						// 	url: '/pages/mypages/users'
+						// })
 						
 					}).catch((err)=>{
 						console.log(err)	
 					})
 				}if(this.vuex_user.role_id==3){
-					rpostform({ forminfo:this.model,user_id:this.vuex_user.user_id,imgurl:this.imgurl}).then((res)=>{
-						console.log("whats")
+					rupdateform({ forminfo:this.model,user_id:this.vuex_user.user_id,imgurl:this.imgurl}).then((res)=>{
+						
 						uni.showToast({
 							title: '提交信息成功',
-							duration: 2000
+							duration: 2000,
 						});
-						uni.switchTab({
-							url: '/pages/mypages/users'
-						})
+						console.log("修改成功")
+						uni.$u.route('/pages/mainpage/manageinfo/lookinfo');
 					}).catch((err)=>{
 						console.log(err)	
 					})
@@ -301,6 +318,7 @@
 						url: 'http://localhost:8081/UsersController/upload', // 仅为示例，非真实的接口地址
 						filePath: url,
 						name: 'file',
+						
 						success: (res) => {
 							resolve(res.data)
 						}

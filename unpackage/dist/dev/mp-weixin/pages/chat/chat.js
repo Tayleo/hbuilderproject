@@ -93,29 +93,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "recyclableRender", function() { return recyclableRender; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
 var components
-try {
-  components = {
-    uSearch: function() {
-      return Promise.all(/*! import() | uview-ui/components/u-search/u-search */[__webpack_require__.e("common/vendor"), __webpack_require__.e("uview-ui/components/u-search/u-search")]).then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-search/u-search.vue */ 391))
-    }
-  }
-} catch (e) {
-  if (
-    e.message.indexOf("Cannot find module") !== -1 &&
-    e.message.indexOf(".vue") !== -1
-  ) {
-    console.error(e.message)
-    console.error("1. 排查组件名称拼写是否正确")
-    console.error(
-      "2. 排查组件是否符合 easycom 规范，文档：https://uniapp.dcloud.net.cn/collocation/pages?id=easycom"
-    )
-    console.error(
-      "3. 若组件不符合 easycom 规范，需手动引入，并在 components 中注册该组件"
-    )
-  } else {
-    throw e
-  }
-}
 var render = function() {
   var _vm = this
   var _h = _vm.$createElement
@@ -180,8 +157,23 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var _api = __webpack_require__(/*! ../../common/config/api.js */ 147);
-var _myfun = _interopRequireDefault(__webpack_require__(/*! ../../common/js/myfun.js */ 146));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };} //
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var _api = __webpack_require__(/*! ../../common/config/api.js */ 146);
+var _websocket = _interopRequireDefault(__webpack_require__(/*! ../../common/js/websocket.js */ 147));
+var _myfun = _interopRequireDefault(__webpack_require__(/*! ../../common/js/myfun.js */ 172));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };} //
 //
 //
 //
@@ -207,7 +199,21 @@ var _myfun = _interopRequireDefault(__webpack_require__(/*! ../../common/js/myfu
 //
 //
 //
-var _default = { data: function data() {return { search: '', chatlist: [// {info_id:'info_id',
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+var _default = { data: function data() {return { amdinMessage: [], search: '', chatlist: [// {info_id:'info_id',
         // user_id:'user_id',
         // user_nickname:'老陈菜',
         // avatar_url:'../../static/pic/people1.webp',
@@ -221,7 +227,7 @@ var _default = { data: function data() {return { search: '', chatlist: [// {info
         // user_nickname:'小陈菜',
         // avatar_url:'../../static/pic/people2.webp',
         // time:'2020-10-02',
-        // content:'你个傻逼玩意儿，老陈菜',
+        // content:'你个玩意儿，老陈菜',
         // status:'0',
         // msgtype:'0',
         // },
@@ -233,16 +239,37 @@ var _default = { data: function data() {return { search: '', chatlist: [// {info
     // 		duration: 2000
     // 	});
     // }
-    this.getlist();}, onLoad: function onLoad(option) {}, methods: { getlist: function getlist() {var _this = this;(0, _api.getchatlist)({ user_id: 1 }).then(function (res) {console.log(res.data);_this.chatlist = res.data;for (var i = 0; i < _this.chatlist.length; i++) {_this.chatlist[i].time = _myfun.default.chatTime(_this.chatlist[i].time);}}).catch(function () {console.log("获取消息列表失败");});
-    },
-    checkmessage: function checkmessage(e) {
-
-      uni.$u.route({
+    this.getlist();}, onLoad: function onLoad(option) {//引用全局websocket并发送消息
+    // console.log(getApp().globalData.text)
+    //  let msg="{acceptId:2,msgtype:0,info_content:哈哈哈哈}";
+    // getApp().globalData.websocket.socketTask.send({
+    // 	data:msg,
+    // })
+    // uni.$u.vuex("vuex_haswebsocket",false)
+    // if(this.vuex_haswebsocket==false){  //如果没连接websocket
+    // 	//this.websocket=new wsRequest("ws://localhost:8081/webSocket",5000,this.vuex_user.user_id)
+    // 	uni.$u.vuex("vuex_websocket",new wsRequest("ws://localhost:8081/webSocket",5000,this.vuex_user.user_id))
+    // 	uni.$u.vuex("vuex_haswebsocket",true)
+    // }
+  }, methods: { getlist: function getlist() {var _this = this; //获取管理员消息列表
+      (0, _api.getadminmessage)({ user_id: this.vuex_user.user_id }).then(function (res) {console.log(res.data);if (res.data != null) {_this.amdinMessage = res.data;_this.amdinMessage.time = _myfun.default.chatTime(_this.amdinMessage.time); //格式化时间
+        }}); //获取与其他用户消息列表
+      (0, _api.getchatlist)({ user_id: this.vuex_user.user_id }).then(function (res) {console.log(res.data);_this.chatlist = res.data;for (var i = 0; i < _this.chatlist.length; i++) {_this.chatlist[i].time = _myfun.default.chatTime(_this.chatlist[i].time);}}).catch(function () {console.log("获取消息列表失败");});}, checkmessage: function checkmessage(e) {uni.$u.route({
         url: 'pages/chat/message',
         params: {
           accept_id: e.user_id,
-          avatar_url: e.avatar_url } });
+          avatar_url: e.avatar_url,
+          name: e.user_nickname } });
 
+
+    },
+    adminmessage: function adminmessage() {
+      uni.$u.route({
+        url: 'pages/chat/message',
+        params: {
+          accept_id: 0,
+          avatar_url: "../../static/img/admin.png",
+          name: "管理员" } });
 
 
     } } };exports.default = _default;

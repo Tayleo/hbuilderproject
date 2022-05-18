@@ -5,6 +5,13 @@ Vue.use(uView);
 let vuexStore = require("@/store/$u.mixin.js");
 Vue.mixin(vuexStore);
 
+//将websocket挂载在全局上
+// import wsRequest from './common/js/websocket.js' ;
+// Vue.prototype.$wsRequest=wsRequest
+
+// import ws from './common/js/socket.js' //找好自己的路径
+// Vue.prototype.$ws = ws
+
 // 假设您项目中已使用VueX
 import store from '@/store';
 Vue.prototype.$store = store
@@ -20,6 +27,8 @@ const app = new Vue({
 
 // 引入请求封装，将app参数传递到配置中
 require('./common/config/request.js')(app)
+
+
 
 
 app.$mount()

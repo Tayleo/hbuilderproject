@@ -29,6 +29,69 @@ page {
   height: 100%;
   background-color: #FFFFFF;
 }
+.titletext {
+  font-size: 28rpx;
+  background-color: #f1f1f1;
+  height: 60rpx;
+}
+.popstyle {
+  width: 98%;
+}
+.demo-layout-left {
+  height: 160px;
+  padding: 10rpx;
+  margin-left: 20rpx;
+  margin-top: 40rpx;
+}
+.demo-layout-right {
+  height: 160px;
+  padding: 10rpx;
+  margin-top: 10rpx;
+  margin-bottom: 25rpx;
+}
+.text-style-bold {
+  font-weight: bold;
+  padding: 5rpx;
+  margin: 10rpx;
+}
+.list {
+  width: 100%;
+  /* border-bottom: solid 26upx #f1f1f1; */
+}
+.list .li {
+  width: 92%;
+  padding: 1% 3%;
+  border-bottom: solid 1rpx #e7e7e7;
+  display: flex;
+  align-items: center;
+}
+.list .li.noborder {
+  border-bottom: 0;
+}
+.list .li .icon {
+  flex-shrink: 0;
+  width: 50rpx;
+  height: 50rpx;
+}
+.list .li .icon image {
+  width: 50rpx;
+  height: 50rpx;
+}
+.list .li .text {
+  padding-left: 10rpx;
+  width: 100%;
+  color: #000000;
+  font-size: 35rpx;
+}
+.list .li .to {
+  flex-shrink: 0;
+  width: 40rpx;
+  height: 40rpx;
+}
+.list .li .icon-next {
+  font-size: 34rpx;
+  color: #999999;
+}
 .top {
   background-color: #12ae96;
   margin-top: 100rpx;

@@ -6,7 +6,7 @@
 					<view class="demo-layout-left">
 							<u--image :showLoading="true"
 							:src="baseinfo.picUrl" 
-							width="100px" height="120px" v-if="type==0" ></u--image>
+							width="100px" height="120px" v-if="type==0||role_id==2" ></u--image>
 							<u--image :showLoading="true"
 							:src="baseinfo.childrenUrl" 
 							width="100px" height="120px" v-else ></u--image>
@@ -14,16 +14,18 @@
 				</u-col>
 				<u-col span="7.5">
 					<view class="demo-layout-right">
-						<view v-if="type==0">
+						<view v-if="type==0||role_id==2">
 							<view class=" text-style-bold" >姓名：{{baseinfo.realName}}</view>
-							<view class=" text-style-bold">性别：{{baseinfo.gender}}</view>
+							<view class=" text-style-bold" v-if="baseinfo.gender==1">性别：男</view>
+							<view class=" text-style-bold" v-else>性别：女</view>
 							<view class=" text-style-bold">年龄：{{baseinfo.age}}</view>
 							<view class=" text-style-bold">出生年月：{{baseinfo.birthday}}</view>
 							<view class=" text-style-bold">居住地：{{baseinfo.nowAddress}}</view>
 						</view>
 						<view v-else>
 							<view class=" text-style-bold" >姓名：{{baseinfo.childrenName}}</view>
-							<view class=" text-style-bold">性别：{{baseinfo.childrenGender}}</view>
+							<view class=" text-style-bold" v-if="baseinfo.childrenGender==1">性别：男</view>
+							<view class=" text-style-bold" v-else>性别：女</view>
 							<view class=" text-style-bold">年龄：{{baseinfo.childrenAge}}</view>
 							<view class=" text-style-bold">出生年月：{{baseinfo.birthday}}</view>
 							<!-- <view class=" text-style-bold">居住地：{{baseinfo.nowAddress}}</view> -->
@@ -48,7 +50,7 @@
 		<view class="titletext">
 			<view style="padding-top: 15rpx; padding-left: 5rpx;"> 联系方式</view>
 		</view>
-		<view class="list" v-if="type==0">
+		<view class="list" v-if="type==0||role_id==2">
 			<view class="li" v-for="(li, li_i) in childrenmoreinfo"  :key="li_i">
 				<view class="text">{{ li.name }}:  {{li.info}}</view>
 			</view>
@@ -80,13 +82,14 @@
 </template>
 
 <script>
-	import {postchildrenbyid,postRelativeById,addCol,deleteOneCol} from '../../common/config/api.js'
+	import {postchildrenbyid,postRelativeById,addCol,deleteOneCol,isStar} from '../../common/config/api.js'
 	import myfun from '../../common/js/myfun.js'
 	export default {
 		data() {
 			return {
+				role_id:null,
 				type:0,
-				user_id:1,
+				user_id:0,
 				tabber_value:0,
 				chaticon:'../../../static/icon/Chat-outlined.png',
 				staricon:'../../../static/icon/Star-outlined.png',
@@ -117,6 +120,9 @@
 			
 			this.user_id=parseInt(option.user_id);
 			this.type=parseInt(option.type);
+			this.role_id=this.type+2;
+			this.role_id=parseInt(option.role_id)
+			
 			// this.user_id=5;
 			// this.type=0;
 			this.landmore();
@@ -124,7 +130,7 @@
 			
 		methods: {
 			landmore(){
-				if(this.type==0){
+				if(this.type==0||this.role_id==2){
 					//发送请求给children
 					postchildrenbyid({user_id:this.user_id}).then((res)=>{
 						this.name=res.data.realName
@@ -148,7 +154,8 @@
 				}else{
 					//发送请求给relative
 					postRelativeById({user_id:this.user_id}).then((res)=>{
-						console.log(res)
+						console.log(res.data)
+						
 						this.name=res.data.childrenName
 						this.baseinfo=res.data
 						
@@ -163,8 +170,16 @@
 						this.moreinfoList[1].info=this.baseinfo.eMail
 						this.moreinfoList[2].info=this.baseinfo.relation
 						
+						
 					})
-				}		
+				}	
+				//查询用户是否被收藏
+				isStar({user_id:this.vuex_user.user_id,star_id:this.user_id}).then((res)=>{
+					console.log(res.data)
+					if(res.data==true){  //如果已经被收藏
+						this.staricon="../../../static/icon/Star-filled.png"
+					}
+				})
 			},
 			chat(){
 				console.log(this.user_id)
@@ -182,13 +197,13 @@
 				if(this.staricon=="../../../static/icon/Star-outlined.png"){
 					//点击收藏
 					var time=myfun.createtime()
-					addCol({user_id:1,col_id:this.user_id,time:time}).then(()=>{
+					addCol({user_id:this.vuex_user.user_id,col_id:this.user_id,time:time}).then(()=>{
 						console.log("收藏成功")
 						this.staricon="../../../static/icon/Star-filled.png"
 					})
 				}else{
 					//再次点击取消收藏
-					deleteOneCol({user_id:1,col_id:this.user_id}).then(()=>{
+					deleteOneCol({user_id:this.vuex_user.user_id,col_id:this.user_id}).then(()=>{
 						console.log("取消收藏成功")
 						this.staricon="../../../static/icon/Star-outlined.png"
 					})

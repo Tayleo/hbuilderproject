@@ -3,7 +3,7 @@
 		<scroll-view class="chat" scroll-y="true" scroll-with-animation="true" :scroll-into-view="scrollToView">
 			<view class="chat-main" :style="{paddingBottom: inputh+'rpx'}">
 				<view class="chat-ls" v-for="(item,index) in msgList" :key="index" :id="'msg'+item.info_id">
-					<view class="chat-time">{{item.info_time}}</view>
+					<view class="chat-time" v-if="item.info_time!=''">{{item.info_time}}</view>
 					<view class="msg-m msg-left" v-if="item.real_send_id!=vuex_user.user_id"><!-- 对方发的 -->
 						<image :src="accept_avatar" class="user-img"></image>
 						<view class="message" v-if="item.msgtype==0">
@@ -14,7 +14,7 @@
 						</view>
 					</view>
 					<view class="msg-m msg-right" v-else>
-						<image src="../../static/pic/people.jpg"  class="user-img"></image>
+						<image :src="vuex_user.user_avator_url"  class="user-img"></image>
 						<view class="message" v-if="item.msgtype==0">
 							<view class="msg-text">{{item.info_content}}</view>
 						</view>
@@ -34,7 +34,7 @@
 
 <script>
 	import myfun from '../../common/js/myfun.js';
-	import {getMessageBefore} from '../../common/config/api.js'
+	import {getMessageBefore,getUserName} from '../../common/config/api.js'
 	import wsRequest from '../../common/js/websocket.js' 
 	//import submit from '../../components/submit/submit.vue'
 	import mysubmit from '../../components/mysubmit/mysubmit.vue'; 
@@ -45,12 +45,12 @@
 				websocket:null,
 				page:1,
 				pagesize:30,
-				accept_id:3,
+				accept_id:null,
 				accept_avatar:'',
-				send_id:15,
+				send_id:16,
 				inputh:5,
 				isWxapp:false,
-				navBarTitle: 'passerby',
+				navBarTitle: '',
 				scrollToView:'',
 				imgList:[
 					'https://cdn.uviewui.com/uview/swiper/swiper1.png',
@@ -67,38 +67,7 @@
 					// 	time:'2000-10-2',
 					// 	tip:0
 					// },
-					// {
-					// 	id:'6'  ,//用户id
-					// 	imagurl:'',//
-					// 	message:'../../static/pic/people.jpg',
-					// 	type:'1',   //内容类型：（0文字 1图片 2音频 ）
-					// 	time:'2000-10-2',
-					// 	tip:1
-					// },
-					// {
-					// 	id:'6'  ,//用户id
-					// 	imagurl:'',//
-					// 	message:'这张照片怎么样',
-					// 	type:'0',   //内容类型：（0文字 1图片 2音频 ）
-					// 	time:'2000-10-2',
-					// 	tip:2
-					// },
-					// {
-					// 	id:'3'  ,//用户id
-					// 	imagurl:'',//
-					// 	message:'../../static/pic/people.jpg',
-					// 	type:'1',   //内容类型：（0文字 1图片 2音频 ）
-					// 	time:'2000-10-2',
-					// 	tip:3
-					// },
-					// {
-					// 	id:'3'  ,//用户id
-					// 	imagurl:'',//
-					// 	message:'../../static/pic/people.jpg',
-					// 	type:'1',   //内容类型：（0文字 1图片 2音频 ）
-					// 	time:'2000-10-2',
-					// 	tip:4
-					// },
+					
 				],
 			}
 		},
@@ -120,30 +89,58 @@
 			mysubmit,
 		},
 		onLoad(option) {
-			this.websocket=new wsRequest("ws://localhost:8081/webSocket",5000,this.vuex_user.user_id)
+			// if(!this.vuex_haswebsocket){  //如果没连接websocket
+			// 	this.websocket=new wsRequest("ws://localhost:8081/webSocket",5000,this.vuex_user.user_id)		
+			// 	uni.$u.vuex("vuex_haswebsocket",true)
+			// }
+			this.websocket=this.vuex_websocket
 			this.getnewmessage()
-			// this.accept_id=parseInt(option.accept_id)
+			this.accept_id=parseInt(option.accept_id)
 			this.accept_avatar=option.avatar_url
-			// this.navBarTitle=option.name
-			console.log("this is"+this.accept_id)
-			//this.getmoremessage()
-			uni.setNavigationBarTitle({
-				title:this.navBarTitle
-			})
+			
+			//根据id去查微信名
+			this.getnickname(this.accept_id)
+			//this.navBarTitle=option.name
+			// console.log("this is"+this.accept_id)
+			this.getmoremessage()
+			
 			
 		},
 		methods: {
+			getnickname(e){
+				getUserName({user_id:e}).then((res)=>{
+					this.navBarTitle=res.data
+					console.log(res.data+"data")
+					uni.setNavigationBarTitle({
+						title:this.navBarTitle
+					})
+				})
+			},
 			getmoremessage(){
 				//查看聊天记录(分页操作)
-				getMessageBefore({page:this.page,pagesize:this.pagesize,accept_id:this.accept_id}).then((res)=>{
+				getMessageBefore({page:this.page,pagesize:this.pagesize,accept_id:this.accept_id,send_id:this.vuex_user.user_id}).then((res)=>{
 					console.log(res)
-					this.msgList=res.data
-					let i=0;
-					for (i = 0; i < this.msgList.length; i++) {
-						this.msgList[i].info_time=myfun.dateTime(this.msgList[i].info_time)
-					}
-					
-					if(this.msgList.length>0){
+					//假设分页那么就需要此辅助数组
+					let infolist=res.data
+					// this.oldtime=new Date() //现在时间
+					if(infolist.length>0){
+						let i=0;
+						let temptime=infolist[0].info_time
+						//this.oldtime=this.msgList[0].info_time
+						//只有查到的第一个时间小于其他时间  时间从大到小插入 
+						// 第一个时间跟现在时间比，显示小的时间 后面的显示大的时间
+						for (i = 0; i < infolist.length; i++) {
+							//this.msgList[i].info_time=myfun.dateTime(this.msgList[i].info_time) //格式化时间
+							let t=myfun.infospacetime(infolist[i].info_time,this.oldtime)
+							if(t!=''){
+								this.oldtime=infolist[i].info_time
+							}
+							infolist[i].info_time=t
+							this.msgList.unshift(infolist[i])
+						}
+						//完成之后将oldtime改为数组最后一个值
+						this.oldtime=temptime
+						// this.msgList=infolist.concat(this.msgList)
 						this.$nextTick(function(){   //回到底部
 							this.scrollToView = 'msg'+this.msgList[i-1].info_id;
 						})
@@ -176,14 +173,22 @@
 				this.websocket.socketTask.onMessage(res => {
 					//console.log(res.data);
 					var a=JSON.parse(res.data);
-					
+					this.oldtime=new Date()
 					this.msgList.push(a)
-					console.log(this.msgList)
-					// if(res.data == id){
-					// 	this.$success("价格核算完毕！")
-					// 	this.getOrderInfo(id)//重新调用这个订单详情
-					// 	this.websocket.close();//手动关闭websocket
-					// }
+					console.log(this.oldtime)
+					//转换时间格式
+					this.msgList[this.msgList.length-1].info_time=myfun.transformtime(this.msgList[this.msgList.length-1].info_time)
+					console.log(this.msgList[this.msgList.length-1].info_time)
+					let t=myfun.infospacetime(this.msgList[this.msgList.length-1].info_time,this.oldtime)
+					if(t){
+						this.oldtime=t
+					}
+					this.msgList[this.msgList.length-1].info_time=t
+					
+					this.$nextTick(function(){   //回到底部
+						this.scrollToView = 'msg'+this.msgList[this.msgList.length-1].info_id;
+					})
+					
 				})
 			},
 			

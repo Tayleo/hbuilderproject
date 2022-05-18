@@ -130,7 +130,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;
 
 
 
@@ -154,8 +154,9 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 
 
 
-var _api = __webpack_require__(/*! ../../common/config/api.js */ 147);
-var _myfun = _interopRequireDefault(__webpack_require__(/*! ../../common/js/myfun.js */ 146));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };} //
+
+var _api = __webpack_require__(/*! ../../common/config/api.js */ 146);
+var _myfun = _interopRequireDefault(__webpack_require__(/*! ../../common/js/myfun.js */ 172));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };} //
 //
 //
 //
@@ -178,21 +179,26 @@ var _myfun = _interopRequireDefault(__webpack_require__(/*! ../../common/js/myfu
 //
 //
 //
-var _default = { data: function data() {return { oldtime: new Date(), starlist: [{ avatarurl: 'https://cdn.uviewui.com/uview/album/1.jpg', name: 'hahha', details: '', birthday: '', user_id: '', match_time: '' }] };}, onLoad: function onLoad() {this.getmycols();}, methods: { getmycols: function getmycols() {var _this = this; //查询我的匹配
-      (0, _api.getmatchlist)({ user_id: 1 }).then(function (res) {_this.starlist = res.data;_this.starlist.sort(function (a, b) {
+//
+var _default = { data: function data() {return { oldtime: new Date(), starlist: [] };}, onLoad: function onLoad() {}, onShow: function onShow() {this.getmycols();}, methods: { deletematchs: function deletematchs(e) {var _this = this; //删除收藏记录
+      (0, _api.deleteMatch)({ user_id: this.vuex_user.user_id, match_id: e }).then(function (res) {console.log("删除成功");_this.getmycols();});}, getmycols: function getmycols() {var _this2 = this;
+      //查询我的匹配
+      (0, _api.getmatchlist)({ user_id: this.vuex_user.user_id }).then(function (res) {
+        _this2.starlist = res.data;
+        _this2.starlist.sort(function (a, b) {
           return b.match_time < a.match_time ? -1 : 1;
         });
-        console.log(_this.starlist);
+        console.log(_this2.starlist);
 
-        _this.starlist[0].match_time = _myfun.default.getyearmonth(_this.starlist[0].match_time);
-        _this.oldtime = _this.starlist[0].match_time;
-        for (var i = 1; i < _this.starlist.length; i++) {
+        _this2.starlist[0].match_time = _myfun.default.getyearmonth(_this2.starlist[0].match_time);
+        _this2.oldtime = _this2.starlist[0].match_time;
+        for (var i = 1; i < _this2.starlist.length; i++) {
           //时间间隔
-          var t = _myfun.default.starspacetime(_this.oldtime, _this.starlist[i].match_time);
+          var t = _myfun.default.starspacetime(_this2.oldtime, _this2.starlist[i].match_time);
           if (t) {
-            _this.oldtime = t;
+            _this2.oldtime = t;
           }
-          _this.starlist[i].match_time = t;
+          _this2.starlist[i].match_time = t;
         }
 
 
@@ -200,7 +206,19 @@ var _default = { data: function data() {return { oldtime: new Date(), starlist: 
       }).catch(function (err) {
         console.log(err);
       });
+    },
+    //跳转到用户详情界面
+    moreinfo: function moreinfo(item) {
+      console.log(item);
+      uni.$u.route({
+        url: 'pages/info/info',
+        params: {
+          user_id: item.user_id,
+          role_id: item.user_role } });
+
+
     } } };exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
 

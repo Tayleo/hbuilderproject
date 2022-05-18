@@ -46,7 +46,7 @@
 
 <script>
 	import {postallchildren,postallrelative} from '../../common/config/api.js'
-	
+	import wsRequest from '../../common/js/websocket.js' 
 	export default {
 		data() {
 			return {
@@ -79,6 +79,12 @@
 			}
 		},
 		onLoad() {
+			// uni.$u.vuex("vuex_haswebsocket",false)
+			// if(this.vuex_haswebsocket==false){  //如果没连接websocket
+			// 	//this.websocket=new wsRequest("ws://localhost:8081/webSocket",5000,this.vuex_user.user_id)
+			// 	uni.$u.vuex("vuex_websocket",new wsRequest("ws://localhost:8081/webSocket",5000,this.vuex_user.user_id))
+			// 	uni.$u.vuex("vuex_haswebsocket",true)
+			// }
 			this.loadmore()
 		},
 		methods: {
@@ -151,13 +157,14 @@
 					
 			},
 			
-			infopage(userid){
+			infopage(user_id){
+				
 				//如果发帖人身份为走失者（将自己id传递给详细页面）下一个页面在children表中查找数据
 				uni.$u.route({
 					url: 'pages/info/info',
 					params: {
-						user_id:userid,
-						type:this.currentsort
+						user_id:user_id,
+						type:this.currentsort,
 					}
 				})
 				
